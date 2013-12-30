@@ -1,0 +1,90 @@
+<template name="signatures">
+<div>
+      <ul class="nav navbar-nav side-nav">
+            <li><a href="/dashboard"><i class="glyphicon glyphicon-stats"></i> Dashboard</a></li>
+            <li class="active"><a href="/signatures"><i class="glyphicon glyphicon-bullhorn"></i> Signatures</a></li>
+            <li><a href="/campaigns"><i class="glyphicon glyphicon-calendar"></i> Campaigns</a></li>
+            {{#if admin}}
+            <li><a href="/users"><i class="glyphicon glyphicon-user"></i> Users</a></li>
+            {{/if}}
+      </ul>
+
+    </div>
+
+    <div id="page-wrapper">
+      <button class="md-trigger btn btn-primary" data-modal="newSignatureModal">Créer une nouvelle signature</button>
+      <table class="table table-striped"> 
+        <tr>
+          <th>Nom</th>
+          <th>Date de création</th>
+          <th></th>
+          <th></th>
+          <th></th>
+        </tr>   
+        {{#each signatures}}
+        <tr>
+          <td>{{name}}</td>
+          <td>{{createdAt}}</td>
+          <td><img src="{{{img}}}" height='50px'/></td>
+          <td><i class="glyphicon glyphicon-pencil md-trigger" idSign="{{_id}}" data-modal="editSignatureModal"></td>
+          <td><i class="glyphicon glyphicon-remove" idSign="{{_id}}"></td>
+        </tr>       
+        {{else}}
+        <p class="empty">No content</p>
+        {{/each}}
+      </table>      
+      <div class="md-modal md-effect-12" id="newSignatureModal">
+  			 <div class="md-content">
+  			   <button type="button" class="close md-close"aria-hidden="true">&times;</button>
+  			   <h3>Nouvelle Signature</h3>
+  			   <div>
+  					 {{> newSignature}}
+  				</div>
+  			</div>
+  		</div>
+  		<div class="md-modal md-effect-12" id="editSignatureModal">
+  			 <div class="md-content">
+  			   <button type="button" class="close md-close"aria-hidden="true">&times;</button>
+  			   <h3>Édition de la Signature</h3>
+  			   <div>
+  					 {{> editSignature}}
+  				</div>
+  			</div>
+  		</div>
+  		<div class="md-overlay"></div>
+    </div><!-- /#page-wrapper -->
+</template>
+
+<template name="newSignature">
+  <form id="new-signature-form" class="form">
+      <div class="form-group">
+        <label class="sr-only" for="new-signature-name">Nom</label>
+        <input type="text" class="form-control" id="new-signature-name" placeholder="Nom" required/>
+      </div>
+      <div class="form-group">
+        <label class="sr-only" for="new-signature-content">Content</label>
+        <textarea type="text" class="form-control" id="new-signature-content" placeholder="Content" rows="15" required></textarea>
+      </div>
+      <div class="form-group">
+        <button type="submit" id="create-new-signature" class="btn btn-primary">Create</button>
+      </div>
+     </div>
+  </form>
+</template>
+<template name="editSignature">
+  <form id="edit-signature-form" class="form">
+    <input type="hidden" id="edit-signature-id"/>
+      <div class="form-group">
+        <label class="sr-only" for="edit-signature-name">Nom</label>
+        <input type="text" class="form-control" id="edit-signature-name" placeholder="Nom" required/>
+      </div>
+      <div class="form-group">
+        <label class="sr-only" for="edit-signature-content">Content</label>
+        <textarea type="text" class="form-control" id="edit-signature-content" placeholder="Content" rows="15" required></textarea>
+      </div>
+      <div class="form-group">
+        <button type="submit" id="create-new-signature" class="btn btn-primary">Edit</button>
+      </div>
+     </div>
+  </form>
+</template>

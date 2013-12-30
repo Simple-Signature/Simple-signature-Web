@@ -1,0 +1,46 @@
+<!--
+    NOTE: You shouldn't use these templates directly. Instead, use the global
+    {{loginButtons}} template. For positioning on the right side of your app,
+    try {{loginButtons align="right"}}
+  -->
+
+<template name="_loginButtons">
+  <div id="login-buttons" class="login-buttons-dropdown-align-{{align}}"></div>
+  {{#if currentUser}}
+    {{#if loggingIn}}
+        {{> _loginButtonsLoggingIn}}
+    {{else}}
+      {{> _loginButtonsLoggedIn}}
+    {{/if}}
+  {{else}}
+    {{> _loginButtonsLoggedOut}}
+  {{/if}}
+</template>
+
+<template name="_loginButtonsLoggedIn">
+    {{> _loginButtonsLoggedInDropdown}}
+</template>
+
+<template name="_loginButtonsLoggedOut">
+    {{> _loginButtonsLoggedOutDropdown}}
+</template>
+
+<!-- used in various places to display messages to user -->
+<template name="_loginButtonsMessages">
+  {{#if errorMessage}}
+    <div class="alert alert-danger">{{errorMessage}}</div>
+  {{/if}}
+  {{#if infoMessage}}
+    <div class="alert alert-success no-margin">{{infoMessage}}</div>
+  {{/if}}
+</template>
+
+<template name="_loginButtonsLoggingIn">
+  <div class="login-buttons-padding" />
+  <div class="loading">&nbsp;</div>
+  <div class="login-buttons-padding" />
+</template>
+
+<template name="_loginButtonsLoggingInPadding">
+      <div class="login-buttons-padding" />
+</template>

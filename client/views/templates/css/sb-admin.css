@@ -1,0 +1,45 @@
+
+body {
+  margin-top: 50px;
+}
+
+#wrapper {
+  padding-left: 0;
+}
+
+#page-wrapper {
+box-sizing: border-box;
+  width: 100%;
+  padding: 5px 15px;
+  padding-left:240px;
+}
+
+.side-nav li {
+  font-size: large;
+}
+
+
+/* Edit Below to Customize Widths > 768px */
+@media (min-width:768px) {
+
+  /* Side Nav */
+
+  .side-nav {
+	margin-left: -225px;
+	left: 225px;
+	width: 225px;
+	position: fixed;
+	top: 50px;
+	height: 100%;
+	border-radius: 0;
+	border: none;
+	background-color: #222222;
+	overflow-y: auto;
+  }
+
+  /* Bootstrap Default Overrides - Customized Dropdowns for the Side Nav */
+
+  .side-nav>li>a {
+	width: 225px;
+  }
+}

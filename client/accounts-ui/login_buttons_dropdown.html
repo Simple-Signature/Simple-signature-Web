@@ -1,0 +1,118 @@
+<!--           -->
+<!-- LOGGED IN -->
+<!--           -->
+<template name="_loginButtonsLoggedInDropdown">
+  <ul class="nav navbar-nav navbar-right">
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{displayName}} <b class="caret"></b></a>    
+        <div class="dropdown-menu" style="padding: 15px;min-width: 250px;">
+          {{#if inMessageOnlyFlow}}
+            {{> _loginButtonsMessages}}
+          {{else}}
+            {{#if inChangePasswordFlow}}
+              {{> _loginButtonsChangePassword}}
+            {{else}}
+              {{> _loginButtonsLoggedInDropdownActions}}
+            {{/if}}
+          {{/if}}
+        </div>
+    </li>
+  </ul>
+</template>
+
+<template name="_loginButtonsLoggedInDropdownActions">
+  {{#if allowChangingPassword}}
+    <button class="btn btn-default btn-block" id="login-buttons-open-change-password">Change password</button>
+  {{/if}}
+  <button class="btn btn-block btn-primary" id="login-buttons-logout">Sign out</button>
+</template>
+
+<!--            -->
+<!-- LOGGED OUT -->
+<!--            -->
+<template name="_loginButtonsLoggedOutDropdown">
+  <ul class="nav navbar-nav navbar-right">
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Sign In{{#unless forbidClientAccountCreation}} / Up{{/unless}} <b class="caret"></b></a>
+        <ul class="dropdown-menu" style="padding: 15px;min-width: 250px;">
+          <li>
+            {{> _loginButtonsLoggedOutAllServices}}
+          </li>
+        </ul>
+    </li>
+  </ul>
+</template>
+
+<template name="_loginButtonsLoggedOutAllServices">
+      {{> _loginButtonsLoggedOutPasswordService}}
+</template>
+
+<template name="_loginButtonsLoggedOutPasswordService">
+  {{#if inForgotPasswordFlow}}
+    {{> _forgotPasswordForm}}
+  {{else}}
+    {{> _loginButtonsMessages}}
+    <form id="login-form" class="form">
+      {{#each fields}}
+        {{> _loginButtonsFormField}}
+      {{/each}}
+      <div class="form-group">
+        <button class="btn btn-primary col-sm-12" id="login-buttons-password" type="submit">
+          {{#if inSignupFlow}}
+            Create
+          {{else}}
+            Sign in
+          {{/if}}
+        </button>
+      </div>
+    </form>
+    {{#if inLoginFlow}}
+      <div id="login-other-options">
+      {{#if showForgotPasswordLink}}
+        <a id="forgot-password-link" class="pull-left" >Forgot password?</a>
+      {{/if}}
+      {{#if showCreateAccountLink}}
+        <a id="signup-link" class="pull-right" >Create account</a>
+      {{/if}}
+      </div>
+    {{/if}}
+    {{#if inSignupFlow}}
+      {{> _loginButtonsBackToLoginLink}}
+    {{/if}}
+  {{/if}}
+</template>
+
+<template name="_forgotPasswordForm">
+  <form id="forgot-form" class="form">
+    {{> _loginButtonsMessages}}
+    <div id="forgot-password-email-label-and-input" class="form-group"> {{! XXX we should probably use loginButtonsFormField }}
+      <input id="forgot-password-email" type="email" placeholder="E-mail" class="form-control" />
+    </div>
+    <div class="form-group">
+      <button class="btn btn-primary login-button-form-submit col-sm-12" id="login-buttons-forgot-password" type="submit">Reset password</button>
+    </div>
+    {{> _loginButtonsBackToLoginLink}}
+  </div>
+</template>
+
+<template name="_loginButtonsBackToLoginLink">
+    <button id="back-to-login-link" class="btn btn-default col-sm-12">Cancel</button>
+</template>
+
+<template name="_loginButtonsFormField">
+  {{#if visible}}
+    <div class="form-group">
+      <label class="sr-only" for="login-{{fieldName}}">{{fieldLabel}}</label>
+      <input id="login-{{fieldName}}" type="{{inputType}}" placeholder="{{fieldLabel}}" class="form-control" />
+    </div>
+  {{/if}}
+</template>
+
+<template name="_loginButtonsChangePassword">
+  {{> _loginButtonsMessages}}
+  {{#each fields}}
+    {{> _loginButtonsFormField}}
+  {{/each}}
+  <button class="btn btn-primary" id="login-buttons-do-change-password">Change password</button>
+  <button class="btn btn-default login-close">Close</button>
+</template>
