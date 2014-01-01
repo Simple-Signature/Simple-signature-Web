@@ -56,3 +56,13 @@ box-sizing: border-box;
 .panel-heading i{
   font-size:5em;
 }
+
+.nav-pills>li.active>a, .nav-pills>li.active>a:hover, .nav-pills>li.active>a:focus {
+  background-color:#9b59b6;
+}
+.nav>li>a:hover, .nav>li>a:focus {
+  background-color:#fff;
+}
+.nav-pills>li>a {
+  border-radius: 0px;
+}

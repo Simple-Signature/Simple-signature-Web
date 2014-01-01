@@ -1,6 +1,6 @@
 <template name="signatures">
 <div>
-      <ul class="nav navbar-nav side-nav">
+      <ul class="nav nav-pills nav-stacked side-nav">
             <li><a href="/dashboard"><i class="glyphicon glyphicon-stats"></i> Dashboard</a></li>
             <li class="active"><a href="/signatures"><i class="glyphicon glyphicon-bullhorn"></i> Signatures</a></li>
             <li><a href="/campaigns"><i class="glyphicon glyphicon-calendar"></i> Campaigns</a></li>
@@ -12,27 +12,37 @@
     </div>
 
     <div id="page-wrapper">
-      <button class="md-trigger btn btn-primary" data-modal="newSignatureModal">Créer une nouvelle signature</button>
-      <table class="table table-striped"> 
-        <tr>
-          <th>Nom</th>
-          <th>Date de création</th>
-          <th></th>
-          <th></th>
-          <th></th>
-        </tr>   
-        {{#each signatures}}
-        <tr>
-          <td>{{name}}</td>
-          <td>{{createdAt}}</td>
-          <td><img src="{{{img}}}" height='50px'/></td>
-          <td><i class="glyphicon glyphicon-pencil md-trigger" idSign="{{_id}}" data-modal="editSignatureModal"></td>
-          <td><i class="glyphicon glyphicon-remove" idSign="{{_id}}"></td>
-        </tr>       
-        {{else}}
-        <p class="empty">No content</p>
-        {{/each}}
-      </table>      
+      <div class="row">
+          <div class="col-lg-12">
+            <ol class="breadcrumb">
+              <li class="active"><i class="glyphicon glyphicon-bullhorn"></i> Signatures</li>
+            </ol>
+          </div>
+        </div><!-- /.row -->
+      <div class="container"><button class="md-trigger btn btn-primary" data-modal="newSignatureModal">Créer une nouvelle signature</button></div>
+      <br />
+      <div class="container">
+        <table class="table table-striped"> 
+          <tr>
+            <th>Nom</th>
+            <th>Date de création</th>
+            <th></th>
+            <th></th>
+            <th></th>
+          </tr>   
+          {{#each signatures}}
+          <tr>
+            <td>{{name}}</td>
+            <td>{{createdAt}}</td>
+            <td><img src="{{{img}}}" height='50px'/></td>
+            <td><i class="glyphicon glyphicon-pencil md-trigger" idSign="{{_id}}" data-modal="editSignatureModal"></td>
+            <td><i class="glyphicon glyphicon-remove" idSign="{{_id}}"></td>
+          </tr>       
+          {{else}}
+          <p class="empty">No content</p>
+          {{/each}}
+        </table>  
+      </div>    
       <div class="md-modal md-effect-12" id="newSignatureModal">
   			 <div class="md-content">
   			   <button type="button" class="close md-close"aria-hidden="true">&times;</button>
