@@ -11,7 +11,6 @@
     "services": "services"
     "dashboard": "dashboard"
     "signup": "signup"
-    "api/:firm/:service": "api"
     "": "home"
     "*path": "noteFound" # For any other path, go 404
     
@@ -69,22 +68,19 @@
 
   signup: () ->
     @.go ViewSignup
-  
-  api: (firm, service) ->
-    @.APIsend firm, service
 
     # Actually changes the page by creating the view and inserting it
   go: (viewClass, internal, params) ->
     if !viewClass?
       viewClass = ViewNotFound 
         # Pages that are "internal" can only be viewed by a logged in user
-
+    
         # If all is well, go to the requested page!
-    if !internal or Meteor.userId()?
+    if !internal or (Meteor.userId()? and Meteor.user()? and Meteor.user().profile?)
       @view = new viewClass(params)
       @render()
     else
-      @go ViewNotFound
+      @.go ViewNotFound
 
     # Render the current view
   render: () ->
@@ -94,7 +90,7 @@
     
   renderHeader: () ->
     @viewHeader = new ViewHeader()
-    $(@page_header_sel).replaceWith(@viewHeader.render().$el)
+    $(@page_header_sel).html(@viewHeader.render().$el)
     
     # Method to replace an anchor tag event with a Backbone route event
   aReplace: (e) ->

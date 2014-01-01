@@ -11,3 +11,10 @@ Meteor.startup () ->
   App.router = new Router()
   Backbone.history.start({pushState: true})
 
+Meteor.autorun () ->
+  message = Session.get('displayMessage')
+  if (message) 
+    console.log(message)
+    stringArray = message.split('&amp;')
+    ui.notify(stringArray[0], stringArray[1]).effect('slide').closable()
+    Session.set('displayMessage', null)

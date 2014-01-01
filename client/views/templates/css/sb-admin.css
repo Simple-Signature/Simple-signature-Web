@@ -43,3 +43,16 @@ box-sizing: border-box;
 	width: 225px;
   }
 }
+
+.announcement-heading {
+  font-size: 50px;
+  margin: 0;
+}
+
+.announcement-text {
+  margin: 0;
+}
+
+.panel-heading i{
+  font-size:5em;
+}

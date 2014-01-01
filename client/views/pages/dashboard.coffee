@@ -21,8 +21,9 @@
     @$el.html(@template)
     return this
 
-Template.dashboard.admin = () ->
-  if Meteor.user()? && Meteor.user().profile?
-    return Meteor.user().profile.admin
-  else
-    return false
+Template.dashboard.helpers
+  admin: () -> return Meteor.user()? and Meteor.user().profile? and Meteor.user().profile.admin
+  signatures: () -> return Signatures.find({firm: Meteor.user().profile.firm}).count()
+  campaigns: () -> return Campaigns.find({firm: Meteor.user().profile.firm}).count()
+  users: () -> return Meteor.users.find({'profile.firm': Meteor.user().profile.firm}).count()
+    

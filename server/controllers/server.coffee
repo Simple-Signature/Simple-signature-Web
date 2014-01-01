@@ -36,8 +36,8 @@ Meteor.publish 'images', () ->
   
 Meteor.Router.add
   '/API/:firm/:service': (firm, service) ->
-    this.response.header("Access-Control-Allow-Origin","*")
-    this.response.header("Access-Control-Allow-Headers","X-Requested-With")
+    this.response.setHeader("Access-Control-Allow-Origin","*")
+    this.response.setHeader("Access-Control-Allow-Headers","X-Requested-With")
     firms = Firms.findOne({name:firm})
     service = Services.findOne({name:service})
     if firms?

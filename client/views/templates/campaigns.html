@@ -12,7 +12,16 @@
     </div>
 
     <div id="page-wrapper">
-      <button class="md-trigger btn btn-primary" data-modal="newCampaignModal">Créer une nouvelle campagne</button>
+      <div class="container">  
+        <div class="row">
+          <div class="col-lg-3">    
+            <button class="md-trigger btn btn-primary" data-modal="newCampaignModal">Créer une nouvelle campagne</button>
+          </div>
+          <div class="col-lg-9 well" id="detailsCampaign">
+            {{> detailsCampaign}}
+          </div>
+        </div>        
+      </div>
       <div id='calendar'></div>
       <div class="md-modal md-effect-12" id="newCampaignModal">
   			 <div class="md-content">
@@ -54,4 +63,16 @@
       </div>
      </div>
   </form>
+</template>
+
+<template name="detailsCampaign">
+  {{#if campaign}}
+  <p>Nom de la campagne : <strong>{{campaign.title}}</strong></p>
+  <p>Date de début : <strong>{{campaign.start}}</strong></p>
+  <p>Date de fin : <strong>{{campaign.end}}</strong></p>
+  <p><img src="{{{signature.img}}}" height='50px'/></p> 
+  {{#if canDelete}}
+  <p><button class="btn btn-sm btn-danger" id="cancel">Cancel the campaign</button></p>
+  {{/if}}
+  {{/if}}
 </template>
