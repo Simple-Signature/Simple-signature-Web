@@ -1,7 +1,7 @@
 ###
     View logic for the Cars page
 ###
-
+@imagesList = []
 @ViewSignatures = Backbone.View.extend
 
     # The Meteor template used by this view
@@ -11,7 +11,11 @@
   initialize: () ->
             
     Template.signatures.helpers 
-      signatures: -> return Signatures.find({firm: Meteor.user().profile.firm})
+      signatures: -> 
+        @imagesList = []
+        imgs = FirmsImages.find()
+        imgs.forEach((image) -> @imagesList.push([image.metadata.title, image.url()]))
+        return Signatures.find({firm: Meteor.user().profile.firm})
       admin: -> 
         if Meteor.user()? && Meteor.user().profile?
           return Meteor.user().profile.admin
@@ -21,6 +25,10 @@
 
     Template.signatures.events
       # Prevent the page reloading for links
+      "click #cke_edit-signature-content a" : () ->
+        return false
+      "click #cke_new-signature-content a" : () ->
+        return false
       "click a": (e) ->
         App.router.aReplace(e)
       "click i.glyphicon-pencil": (e) ->
@@ -28,7 +36,7 @@
         $("#edit-signature-name").val(sign.name)
         CKEDITOR.instances['edit-signature-content'].setData(sign.value.replace('PATHAPPDATA','/img/'))
         $("#edit-signature-id").val(sign._id)
- 
+      
     @template = Meteor.render () ->
       return Template.signatures()
     
@@ -40,15 +48,35 @@
 Template.signatures.rendered = () ->
   ModalEffects()
   CKEDITOR.replace('new-signature-content',
-    customConfig: '/assets/config.js'
+    toolbar: [
+      { name: 'document', groups: [ 'mode', 'doctools' ], items: [ 'Source', '-', 'Templates' ] },
+      { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ], items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat' ] },
+      { name: 'links', items: [ 'Link', 'Unlink' ] },
+      { name: 'insert', items: [ 'Image', 'HorizontalRule', 'SpecialChar'] },
+      '/',
+      { name: 'styles', items: [ 'Font', 'FontSize' ] },
+      { name: 'colors', items: [ 'TextColor', 'BGColor' ] },
+      { name: 'tools', items: [ 'Maximize', 'ShowBlocks' ] }
+    ]
+    enterMode: CKEDITOR.ENTER_BR
   )
   CKEDITOR.replace('edit-signature-content',
-    customConfig: '/assets/config.js'
+    toolbar: [
+      { name: 'document', groups: [ 'mode', 'doctools' ], items: [ 'Source', '-', 'Templates' ] },
+      { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ], items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat' ] },
+      { name: 'links', items: [ 'Link', 'Unlink' ] },
+      { name: 'insert', items: [ 'Image', 'HorizontalRule', 'SpecialChar'] },
+      '/',
+      { name: 'styles', items: [ 'Styles', 'Format', 'Font', 'FontSize' ] },
+      { name: 'colors', items: [ 'TextColor', 'BGColor' ] },
+      { name: 'tools', items: [ 'Maximize', 'ShowBlocks' ] }
+    ]
+    enterMode: CKEDITOR.ENTER_BR
   )
 
 Template.newSignature.events
   "submit" : (e,t) ->
-    e.preventDefault();
+    e.preventDefault()
     name = t.find('#new-signature-name').value
     content = t.find('#new-signature-content').value  
     firm = Meteor.user().profile.firm

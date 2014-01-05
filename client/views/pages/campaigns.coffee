@@ -75,10 +75,11 @@ Template.newCampaign.events
     name = t.find('#new-campaign-name').value
     signature = t.find('#new-campaign-signature').value  
     service = t.find('#new-campaign-service').value
+    notify = t.find('#new-campaign-notidy').value
     if service? && service.length? && service.length is 0
       service = null  
     firm = Meteor.user().profile.firm
-    if (Meteor.user().profile.paid or isNotAlreadyThreeCampaigns(firm, new Date())) and isNotAlreadyASameCampaign(name, firm) and name isnt ""
+    if isNotAlreadyASameCampaign(name, firm) and name isnt ""
       campaign = 
         title: name
         signature: signature
@@ -87,6 +88,7 @@ Template.newCampaign.events
         end: new Date()
         service: service  
         editable: true
+        notify: notify
       Campaigns.insert campaign
       $('#calendar').fullCalendar('renderEvent', campaign, true);      
       $(".md-modal").removeClass("md-show")

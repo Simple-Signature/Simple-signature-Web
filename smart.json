@@ -1,6 +1,15 @@
 {
   "packages": {
     "router": {},
-    "collectionFS": {}
+    "collectionFS": {"git": "https://github.com/CollectionFS/Meteor-CollectionFS.git",
+      "branch" : "devel-merge"},
+    "cfs-filesystem": {
+      "git": "https://github.com/CollectionFS/Meteor-cfs-filesystem.git",
+      "branch" : "master"
+    },
+    "cfs-handlebars": {
+      "git": "https://github.com/CollectionFS/Meteor-cfs-handlebars.git",
+      "branch" : "master"
+    }
   }
 }

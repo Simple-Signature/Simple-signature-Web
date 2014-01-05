@@ -55,6 +55,7 @@ box-sizing: border-box;
 
 .panel-heading i{
   font-size:5em;
+  padding-top:8px
 }
 
 .nav-pills>li.active>a, .nav-pills>li.active>a:hover, .nav-pills>li.active>a:focus {
@@ -65,4 +66,13 @@ box-sizing: border-box;
 }
 .nav-pills>li>a {
   border-radius: 0px;
+}
+.panel-info>a>.panel-footer {
+  color: #3a87ad;
+}
+.panel-warning>a>.panel-footer {
+  color: #c09853;
+}
+.panel-danger>a>.panel-footer {
+  color: #b94a48;
 }

@@ -3,7 +3,18 @@
   "dependencies": {
     "basePackages": {
       "router": {},
-      "collectionFS": {}
+      "collectionFS": {
+        "git": "https://github.com/CollectionFS/Meteor-CollectionFS.git",
+        "branch": "devel-merge"
+      },
+      "cfs-filesystem": {
+        "git": "https://github.com/CollectionFS/Meteor-cfs-filesystem.git",
+        "branch": "master"
+      },
+      "cfs-handlebars": {
+        "git": "https://github.com/CollectionFS/Meteor-cfs-handlebars.git",
+        "branch": "master"
+      }
     },
     "packages": {
       "router": {
@@ -12,9 +23,19 @@
         "commit": "d00e380dda2184b70e909fc4a0fb5358d602c586"
       },
       "collectionFS": {
-        "git": "https://github.com/raix/Meteor-CollectionFS.git",
-        "tag": "v0.3.6",
-        "commit": "e28922685d07fc2bd17e23571eeb050cd85176f7"
+        "git": "https://github.com/CollectionFS/Meteor-CollectionFS.git",
+        "branch": "devel-merge",
+        "commit": "6e34c0352e2eca85f7a32d43254a0b57ac26c674"
+      },
+      "cfs-filesystem": {
+        "git": "https://github.com/CollectionFS/Meteor-cfs-filesystem.git",
+        "branch": "master",
+        "commit": "c59f735b479661667908c0f59ccce87f8b783aea"
+      },
+      "cfs-handlebars": {
+        "git": "https://github.com/CollectionFS/Meteor-cfs-handlebars.git",
+        "branch": "master",
+        "commit": "676dde6b5138be38d244dc1e10d699959f3cfdc4"
       },
       "page-js-ie-support": {
         "git": "https://github.com/tmeasday/meteor-page-js-ie-support.git",
@@ -26,10 +47,20 @@
         "tag": "v4.0.0",
         "commit": "dc4965f1424cfca625ec3fbea17eace03f8e32c5"
       },
-      "cfs-public-folder": {
-        "git": "https://github.com/nooitaf/meteor-cfs-public-folder.git",
-        "tag": "v0.0.3",
-        "commit": "581c716424b374efb6f611110002621f9cc9212b"
+      "http-methods": {
+        "git": "https://github.com/CollectionFS/Meteor-http-methods.git",
+        "tag": "v0.0.11",
+        "commit": "1da8dedddceebcfff8ceb6371aaff4a38668cf6a"
+      },
+      "collection-hooks": {
+        "git": "https://github.com/matb33/meteor-collection-hooks.git",
+        "tag": "v0.6.1",
+        "commit": "f8baa3b5a56ab35272c9260c623e1ae85ade6596"
+      },
+      "power-queue": {
+        "git": "https://github.com/CollectionFS/Meteor-powerqueue.git",
+        "branch": "master",
+        "commit": "d82c4a185947c44532db2929d86855aa2f689a43"
       }
     }
   }

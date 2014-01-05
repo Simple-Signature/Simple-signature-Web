@@ -3,6 +3,7 @@
       <ul class="nav nav-pills nav-stacked side-nav">
             <li><a href="/dashboard"><i class="glyphicon glyphicon-stats"></i> Dashboard</a></li>
             <li class="active"><a href="/signatures"><i class="glyphicon glyphicon-bullhorn"></i> Signatures</a></li>
+            <li><a href="/images"><i class="glyphicon glyphicon-picture"></i> Images</a></li>
             <li><a href="/campaigns"><i class="glyphicon glyphicon-calendar"></i> Campaigns</a></li>
             {{#if admin}}
             <li><a href="/users"><i class="glyphicon glyphicon-user"></i> Users</a></li>
@@ -41,8 +42,7 @@
           {{else}}
           <p class="empty">No content</p>
           {{/each}}
-        </table>  
-      </div>    
+        </table>    
       <div class="md-modal md-effect-12" id="newSignatureModal">
   			 <div class="md-content">
   			   <button type="button" class="close md-close"aria-hidden="true">&times;</button>
@@ -76,9 +76,8 @@
         <textarea type="text" class="form-control" id="new-signature-content" placeholder="Content" rows="15" required></textarea>
       </div>
       <div class="form-group">
-        <button type="submit" id="create-new-signature" class="btn btn-primary">Create</button>
+        <button type="submit" id="create-new-signature" class="btn btn-default">Create</button>
       </div>
-     </div>
   </form>
 </template>
 
@@ -94,13 +93,7 @@
         <textarea type="text" class="form-control" id="edit-signature-content" placeholder="Content" rows="15" required></textarea>
       </div>
       <div class="form-group">
-        <button type="submit" id="create-new-signature" class="btn btn-primary">Edit</button>
+        <button type="submit" id="create-new-signature" class="btn btn-default">Edit</button>
       </div>
-     </div>
   </form>
-</template>
-
-<template name="uploadImage">
-  <h3>Select an image to upload:</h3>
-  <input name="file" type="file" class="fileUploader">
 </template>

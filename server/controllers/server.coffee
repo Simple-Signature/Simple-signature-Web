@@ -32,7 +32,12 @@ Meteor.publish "signatures", () ->
 Meteor.publish 'images', () ->
   if this.userId?
     firmId = Meteor.users.findOne({_id:@userId}).profile.firm
-    return FirmsImages.find({ firm: firmId })
+    return FirmsImages.find({ 'metadata.firm': firmId })
+
+Meteor.publish 'stats', () ->
+  if this.userId?
+    firmId = Meteor.users.findOne({_id:@userId}).profile.firm
+    return Stats.find({ firm: firmId })
   
 Meteor.Router.add
   '/API/:firm/:service': (firm, service) ->
@@ -60,3 +65,34 @@ Meteor.Router.add
         return [400,"Aucune campagne en cours"]
     else
       return [400,"Il semble que vous n'avez pas créé de compte Simple Signature"]
+
+Meteor.Router.add
+  '/API/:firm': (firm) ->
+    this.response.setHeader("Access-Control-Allow-Origin","*")
+    this.response.setHeader("Access-Control-Allow-Headers","X-Requested-With")
+    firms = Firms.findOne({name:firm})
+    if firms?
+      campaigns = Campaigns.find({$and: [{firm:firms._id}, {start: {$lte:new Date()}}, {end: {$gte:new Date()}} ]},{fields:{signature:1}}).fetch()
+      if campaigns?
+        campaignsId=[]
+        campaigns.forEach (campaign) -> 
+          if !campaign.service?
+            campaignsId.push(campaign.signature)
+        signatures = Signatures.find({_id:{$in: campaignsId}}).fetch()
+        return [200,JSON.stringify(signatures)]
+      else
+        return [400,"Aucune campagne en cours"]
+    else
+      return [400,"Il semble que vous n'avez pas créé de compte Simple Signature"]
+
+Meteor.Router.add
+  '/API/:firm/:signature/:externe/:interne': (firm, signature, externe, interne) ->
+    this.response.setHeader("Access-Control-Allow-Origin","*")
+    this.response.setHeader("Access-Control-Allow-Headers","X-Requested-With")
+    Stats.insert
+      firm:firm
+      signature:signature
+      externe:externe
+      interne:interne
+      timestamp:new Date()
+    return [200,"OK"]

@@ -142,7 +142,15 @@
     Template._loginButtonsLoggedIn.displayName = function() {
         return Accounts._loginButtons.displayName();
     };
-
+    
+    Template._loginButtonsLoggedIn.rendered = function() {
+      Meteor.subscribe('services');
+      Meteor.subscribe('signatures');
+      Meteor.subscribe('campaigns');
+      Meteor.subscribe('images');
+      Meteor.subscribe('stats');
+    };
+      
 
 
     //
@@ -435,10 +443,6 @@
       if (error) {
         loginButtonsSession.errorMessage(error.reason || "Unknown error");
       } else {
-        Meteor.subscribe('services')
-        Meteor.subscribe('signatures')
-        Meteor.subscribe('campaigns')
-        Meteor.subscribe('images')
         loginButtonsSession.closeDropdown();
         App.router.renderHeader();
         App.router.navigate("/dashboard", {trigger: true})
@@ -506,10 +510,6 @@
       if (error) {
         loginButtonsSession.errorMessage(error.reason || "Unknown error");
       } else {
-        Meteor.subscribe('services')
-        Meteor.subscribe('signatures')
-        Meteor.subscribe('campaigns')
-        Meteor.subscribe('images')
         loginButtonsSession.closeDropdown();
         App.router.renderHeader();
         App.router.navigate("/dashboard", {trigger: true})

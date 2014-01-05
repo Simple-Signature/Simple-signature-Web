@@ -12,9 +12,10 @@
       return Template.notFound()
 
     Template.notFound.events
-    # Prevent the page reloading for links
-      "click a": (e) ->
-        App.router.aReplace e
+      # Prevent the page reloading for links
+      "click": (e) ->
+        App.router.aReplace(e)
+
 
     # Render the view on its $el parameter and return the view itself
   render: () ->

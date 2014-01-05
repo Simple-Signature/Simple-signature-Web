@@ -26,5 +26,6 @@ Template.componentHeader.events
       # Prevent the page reloading for links
   "click a": (e) ->
     App.router.aReplace(e)
+    
 Template.componentHeader.helpers
-  loggedIn: -> return Meteor.userId?
+  loggedIn: -> return Meteor.userId()?

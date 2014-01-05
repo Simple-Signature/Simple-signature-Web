@@ -4,8 +4,9 @@
 
 # Declare the collection
 @Firms = new Meteor.Collection("firms")
-
-@FirmsImages = new CollectionFS('firms', {autopublish:false})
+if Meteor.isServer
+  @FirmsImages = new FS.Collection('images', {store: new FS.FileSystemStore("images", Npm.require('path').resolve('..')+"/client/app/img"), autopublish:false, filter: {allow:contentTypes: ['image/*']}})
+else @FirmsImages = new FS.Collection('images')
 
 @Firms.allow
     # Client can add records
@@ -36,7 +37,3 @@
         return firmId == file.firm
       )
     else return false
-    
-@FirmsImages.filter
-  allow: 
-    contentTypes: ['image/*']

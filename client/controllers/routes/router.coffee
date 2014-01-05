@@ -10,9 +10,10 @@
     "services/:id": "service"
     "services": "services"
     "dashboard": "dashboard"
+    "images": "images"
     "signup": "signup"
     "": "home"
-    "*path": "noteFound" # For any other path, go 404
+    "*invalidRoute": "notFound" # For any other path, go 404
     
 
     # The current view
@@ -62,6 +63,9 @@
         
   dashboard: () ->
     @.go ViewDashboard, true
+    
+  images: () ->
+    @.go ViewImages, true
 
   notFound: () ->
     @.go ViewNotFound
@@ -80,7 +84,7 @@
       @view = new viewClass(params)
       @render()
     else
-      @.go ViewNotFound
+      @navigate("/404", {trigger: true})
 
     # Render the current view
   render: () ->

@@ -3,6 +3,7 @@
       <ul class="nav nav-pills nav-stacked side-nav">
             <li><a href="/dashboard"><i class="glyphicon glyphicon-stats"></i> Dashboard</a></li>
             <li><a href="/signatures"><i class="glyphicon glyphicon-bullhorn"></i> Signatures</a></li>
+            <li><a href="/images"><i class="glyphicon glyphicon-picture"></i> Images</a></li>
             <li class="active"><a href="/campaigns"><i class="glyphicon glyphicon-calendar"></i> Campaigns</a></li>
             {{#if admin}}
             <li><a href="/users"><i class="glyphicon glyphicon-user"></i> Users</a></li>
@@ -64,6 +65,11 @@
           <option value="{{_id}}">{{name}}</option>
           {{/each}}
         </select>
+      </div>
+      <div class="checkbox">
+        <label>
+          <input type="checkbox" id="new-campaign-notify"> Notifier quand la campagne commence
+        </label>
       </div>
       <div class="form-group">
         <button type="submit" id="create-new-campaign" class="btn btn-primary">Create</button>
