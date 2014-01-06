@@ -533,6 +533,7 @@
 						label: editor.lang.image.alt,
 						accessKey: 'T',
 						'default': '',
+						style: 'visibility:hidden',
 						onChange: function() {
 							updatePreview( this.getDialog() );
 						},
