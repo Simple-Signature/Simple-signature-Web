@@ -98,8 +98,8 @@
     
     # Method to replace an anchor tag event with a Backbone route event
   aReplace: (e) ->
-        # Don't let the page reload like normal
-    if @getHref(e.target).slice(-1) isnt "#"
+        # Don't let the page reload like normal 
+    if @getHref(e.target).slice(-1) isnt "#" and !$(e.target).hasClass("no-backbone")
       e.preventDefault()
         # Parse out the part of the url the router needs
       a = document.createElement("a")
