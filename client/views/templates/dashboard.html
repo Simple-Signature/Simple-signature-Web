@@ -20,7 +20,23 @@
             </ol>
           </div>
         </div><!-- /.row -->
-
+        <div class="row">
+          <h3>TODO</h3>
+          <ul>
+            <li>Pick the last campaign to show</li>
+            <li>Add support for stats mail sent for Gmail extension</li>
+            <li>Add support for reply in Gmail extension
+            <li>Manage Users</li>
+            <li>Notification campaigns beginning</li>
+            <li>Support paid account</li>
+            <li>Support Mail.app</li>
+            <li>Support Outlook 2013</li>
+            <li>Support Gmail on firefox</li>
+            <li>signup page</li>
+            <li>download page</li>
+            <li>best practices for signature mail page</li>
+          </ul>
+        </div>
         <div class="row">
           <div class="col-lg-4">
             <div class="panel panel-info">
@@ -109,7 +125,7 @@
           <div class="col-lg-12">
             <div class="panel panel-primary">
               <div class="panel-heading">
-                <h3 class="panel-title"><i class="glyphicon glyphicon-send" style="font-size:1em;padding-top:0"></i> Number of Mails Sent: October 1, 2013 - October 31, 2013</h3>
+                <h3 class="panel-title"><i class="glyphicon glyphicon-send" style="font-size:1em;padding-top:0"></i> Number of Mails Sent: {{prettifyDate beginStatDate}} - {{prettifyDate endStatDate}}</h3>
               </div>
               {{#constant}}
               <div class="panel-body" id="panelStat">
@@ -120,6 +136,8 @@
           </div>
         </div><!-- /.row -->
 
-
+        <div class="container">
+          <a class="btn btn btn-primary no-backbone" href="/Simple-Signature-Outlook-2010.zip">Simple Signature for Outlook 2010</a><a class="btn btn btn-primary no-backbone" href="/Simple-Signature-Gmail.crx">Simple Signature for Gmail</a>
+        </div>
       </div><!-- /#page-wrapper -->
 </template>
