@@ -34,8 +34,8 @@
           {{#each signatures}}
           <tr>
             <td>{{name}}</td>
-            <td>{{prettifyDate createdAt}}</td>
-            <td><img src="{{{img}}}" style='max-height:50px'/></td>
+            <td>{{createdAt}}</td>
+            <td><img src="{{{img}}}" height='50px'/></td>
             <td><i class="glyphicon glyphicon-pencil md-trigger" idSign="{{_id}}" data-modal="editSignatureModal"></td>
             <td><i class="glyphicon glyphicon-remove" idSign="{{_id}}"></td>
           </tr>       

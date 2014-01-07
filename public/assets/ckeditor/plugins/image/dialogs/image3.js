@@ -333,7 +333,6 @@
 				},
 				onOk: function() {
 					// Edit existing Image.
-					this.imageElement.setAttribute( 'nosend', '1' );
 					if ( this.imageEditMode ) {
 						var imgTagName = this.imageEditMode;
 
@@ -343,7 +342,6 @@
 							imgTagName = 'img';
 							this.imageElement = editor.document.createElement( 'img' );
 							this.imageElement.setAttribute( 'alt', '' );
-							this.imageElement.setAttribute( 'nosend', '1' );
 							editor.insertElement( this.imageElement );
 						}
 						// ImageButton dialog and Image element.
@@ -371,7 +369,6 @@
 							this.imageElement.setAttribute( 'type', 'image' );
 						}
 						this.imageElement.setAttribute( 'alt', '' );
-						this.imageElement.setAttribute( 'nosend', '1' );
 					}
 
 					// Create a new link.
@@ -536,7 +533,6 @@
 						label: editor.lang.image.alt,
 						accessKey: 'T',
 						'default': '',
-						style: 'visibility:hidden',
 						onChange: function() {
 							updatePreview( this.getDialog() );
 						},
