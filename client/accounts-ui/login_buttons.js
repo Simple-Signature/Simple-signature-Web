@@ -438,10 +438,11 @@
         return;
       else
         loginSelector = {email: email};
-
+    $('#loading').show();
     Meteor.loginWithPassword(loginSelector, password, function (error, result) {
       if (error) {
         loginButtonsSession.errorMessage(error.reason || "Unknown error");
+        $('#loading').hide();
       } else {
         loginButtonsSession.closeDropdown();
         App.router.renderHeader();
@@ -502,19 +503,22 @@
       });        
       options.profile = {};
       options.profile.firm = firmId;
+      options.profile.paid=false;
+      options.profile.admin=true;
+      $('#loading').show();
+      Accounts.createUser(options, function (error) {
+        console.log(error);
+        if (error) {
+          loginButtonsSession.errorMessage(error.reason || "Unknown error");
+          $('#loading').hide();
+        } else {
+          loginButtonsSession.closeDropdown();
+          App.router.renderHeader();
+          App.router.navigate("/dashboard", {trigger: true})
+        }
+      });
     }        
-    options.profile.paid=false;
-    options.profile.admin=true;
-
-    Accounts.createUser(options, function (error) {
-      if (error) {
-        loginButtonsSession.errorMessage(error.reason || "Unknown error");
-      } else {
-        loginButtonsSession.closeDropdown();
-        App.router.renderHeader();
-        App.router.navigate("/dashboard", {trigger: true})
-      }
-    });
+    
   };
 
   var forgotPassword = function () {
@@ -574,15 +578,7 @@
     }
     return true;
   };
-
-
-  // XXX from http://epeli.github.com/underscore.string/lib/underscore.string.js
-  var capitalize = function(str){
-    str = str == null ? '' : String(str);
-    return str.charAt(0).toUpperCase() + str.slice(1);
-  };
-
-
+  
   //
   // populate the session so that the appropriate dialogs are
   // displayed by reading variables set by accounts-urls, which parses
