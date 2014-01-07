@@ -438,10 +438,11 @@
         return;
       else
         loginSelector = {email: email};
-
+    $('#loading').show();
     Meteor.loginWithPassword(loginSelector, password, function (error, result) {
       if (error) {
         loginButtonsSession.errorMessage(error.reason || "Unknown error");
+        $('#loading').hide();
       } else {
         loginButtonsSession.closeDropdown();
         App.router.renderHeader();
@@ -481,17 +482,17 @@
     else
     {
       var firmId = Firms.insert({name: firm});
-      var valueInt = "<div id = \"signature\"><p style=\"font-family: Helvetica, Arial, sans-serif; font-size: 12px; line-height: 14px; color: rgb(153, 153, 153);\"><span style=\"font-weight: bold; color: rgb(24, 74, 147);\">VARIABLE_NAME</span> / <span style=\"color: rgb(24, 74, 147);\">VARIABLE_JOB</span><br><span style=\"color: rgb(24, 74, 147);\">VARIABLE_PHONE / <a href=\"mailto:VARIABLE_MAIL\" style=\"color: rgb(30, 177, 230);\">VARIABLE_MAIL</a><span></p><p style=\"margin-top:0.2em;margin-bottom:0.2em\"><img src=\"PATHAPPDATAbandes.jpg\" border=\"0\"></p></div>";
+      var valueInt = "<p style=\"font-family: Helvetica, Arial, sans-serif; font-size: 12px; line-height: 14px; color: rgb(153, 153, 153);\"><span style=\"font-weight: bold; color: rgb(24, 74, 147);\">VARIABLE_NAME</span> / <span style=\"color: rgb(24, 74, 147);\">VARIABLE_JOB</span><br><span style=\"color: rgb(24, 74, 147);\">VARIABLE_PHONE / <a href=\"mailto:VARIABLE_MAIL\" style=\"color: rgb(30, 177, 230);\">VARIABLE_MAIL</a><span></p>";
       var signInt = Signatures.insert({name: "interne default",firm: firmId,createdAt: new Date(),value : valueInt});
-      var valueExt = "<div id = \"signature\"><p style=\"font-family: Helvetica, Arial, sans-serif; font-size: 12px; line-height: 14px; color: rgb(153, 153, 153);\"><span style=\"font-weight: bold; color: rgb(24, 74, 147);\">VARIABLE_NAME</span> / <span style=\"color: rgb(24, 74, 147);\">VARIABLE_JOB</span><br><span style=\"color: rgb(24, 74, 147);\">VARIABLE_PHONE / <a href=\"mailto:VARIABLE_MAIL\" style=\"color: rgb(30, 177, 230);\">VARIABLE_MAIL</a><span></p><p style=\"margin-top:0.2em;margin-bottom:0.2em\"><img src=\"PATHAPPDATAbandes.jpg\" border=\"0\"></p><p style=\"font-family: Helvetica, Arial, sans-serif; font-size: 10px; line-height: 14px;\"><span style=\"font-weight: bold; color: rgb(24, 74, 147);\">Société des Téléphériques de la Grande Motte</span><br><span style=\"color: rgb(24, 74, 147);\">Accueil : </span> <span style=\"color: rgb(24, 74, 147);\">064543543584</span> <span style=\"color: rgb(24, 74, 147);\">/ Fax : </span> <span style=\"color: rgb(24, 74, 147);\">.54.4354354</span><br><span style=\"color: rgb(24, 74, 147);\">Val Claret / F - 73320 Tignes</span><br><a href=\"http://skipass-tignes.com\" style=\"color: rgb(30, 177, 230);\">http://skipass-tignes.com</a><br><a href=\"http://www.facebook.com/Tignes.Ski.Golf\"><img src=\"PATHAPPDATAfacebook.png\" alt=\"Facebook\"></a></p></div>";
+      var valueExt = "<p style=\"font-family: Helvetica, Arial, sans-serif; font-size: 12px; line-height: 14px; color: rgb(153, 153, 153);\"><span style=\"font-weight: bold; color: rgb(24, 74, 147);\">VARIABLE_NAME</span> / <span style=\"color: rgb(24, 74, 147);\">VARIABLE_JOB</span><br><span style=\"color: rgb(24, 74, 147);\">VARIABLE_PHONE / <a href=\"mailto:VARIABLE_MAIL\" style=\"color: rgb(30, 177, 230);\">VARIABLE_MAIL</a><span></p><p style=\"font-family: Helvetica, Arial, sans-serif; font-size: 10px; line-height: 14px;\"><span style=\"font-weight: bold; color: rgb(24, 74, 147);\">"+firm+"</span></p>";
       var signExt = Signatures.insert({name: "externe default",firm: firmId,createdAt: new Date(),value : valueExt});
       Campaigns.insert({title:"Default Intern",signature: signInt,firm: firmId,service: null,start: new Date(),end: new Date(2099,1,1),editable:false});
       Campaigns.insert({title:"Default Extern",signature: signExt,firm: firmId,service: null,start: new Date(),end: new Date(2099,1,1),editable:false});
-      $('#previewSignature').html(valueInt.replace('PATHAPPDATA','/img/'));
+      $('#previewSignature').html(valueInt);
       html2canvas($('#previewSignature'),{onrendered: function (canvas) {
         data = canvas.toDataURL(); 
         Signatures.update({_id:signInt},{$set:{img:data}})
-        $('#previewSignature').html(valueExt.replace('PATHAPPDATA','/img/'));
+        $('#previewSignature').html(valueExt);
         html2canvas($('#previewSignature'),{onrendered: function (canvas2) {
           data2 = canvas2.toDataURL(); 
           Signatures.update({_id:signExt},{$set:{img:data2}})
@@ -502,19 +503,22 @@
       });        
       options.profile = {};
       options.profile.firm = firmId;
+      options.profile.paid=false;
+      options.profile.admin=true;
+      $('#loading').show();
+      Accounts.createUser(options, function (error) {
+        console.log(error);
+        if (error) {
+          loginButtonsSession.errorMessage(error.reason || "Unknown error");
+          $('#loading').hide();
+        } else {
+          loginButtonsSession.closeDropdown();
+          App.router.renderHeader();
+          App.router.navigate("/dashboard", {trigger: true})
+        }
+      });
     }        
-    options.profile.paid=false;
-    options.profile.admin=true;
-
-    Accounts.createUser(options, function (error) {
-      if (error) {
-        loginButtonsSession.errorMessage(error.reason || "Unknown error");
-      } else {
-        loginButtonsSession.closeDropdown();
-        App.router.renderHeader();
-        App.router.navigate("/dashboard", {trigger: true})
-      }
-    });
+    
   };
 
   var forgotPassword = function () {
@@ -574,15 +578,7 @@
     }
     return true;
   };
-
-
-  // XXX from http://epeli.github.com/underscore.string/lib/underscore.string.js
-  var capitalize = function(str){
-    str = str == null ? '' : String(str);
-    return str.charAt(0).toUpperCase() + str.slice(1);
-  };
-
-
+  
   //
   // populate the session so that the appropriate dialogs are
   // displayed by reading variables set by accounts-urls, which parses

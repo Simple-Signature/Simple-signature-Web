@@ -1,7 +1,7 @@
 ###
     The main server file, general server side code should go here
 ###
-
+  
 # Set permissions on the users collection
 Meteor.users.allow
     # A user can update their own record
@@ -96,3 +96,10 @@ Meteor.Router.add
       interne:interne
       timestamp:new Date()
     return [200,"OK"]
+    
+Accounts.onCreateUser (options, user) ->
+  console.log(options)
+  console.log(user)
+  if options.profile?
+    user.profile = options.profile
+  return user

@@ -1,7 +1,7 @@
 ###
     View logic for the dashboard page
 ###
-
+colorArray = ["52, 152, 219","46, 204, 113", "231, 76, 60","26, 188, 156","241, 196, 15","230, 126, 34","149, 165, 166","52, 73, 94"]
 @ViewDashboard = Backbone.View.extend
 
   # The Meteor template used by this view
@@ -26,17 +26,39 @@ Template.dashboard.helpers
   signatures: () -> return Signatures.find({firm: Meteor.user().profile.firm}).count()
   campaigns: () -> return Campaigns.find({firm: Meteor.user().profile.firm}).count()
   users: () -> return Meteor.users.find({'profile.firm': Meteor.user().profile.firm}).count()
+  beginStatDate: () -> 
+    date=new Date()
+    date.setDate(new Date().getDate()-30)
+    return date
+  endStatDate: () -> return new Date()
   
 Template.dashboard.rendered = () ->
   $("#statChart").attr("width",$("#panelStat").width())
-  ctx = document.getElementById("statChart").getContext("2d")
-  data = {}
-  data.labels = []
-  pushDate(data.labels, i) for i in [30..0]
-  data.datasets = [{fillColor : "rgba(220,220,220,0.5)",strokeColor : "rgba(220,220,220,1)",pointColor : "rgba(220,220,220,1)",pointStrokeColor : "#fff",data : [65,59,90,81,56,55,40,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3]},{fillColor : "rgba(151,187,205,0.5)",strokeColor : "rgba(151,187,205,1)",pointColor : "rgba(151,187,205,1)",pointStrokeColor : "#fff",data : [28,48,40,19,96,27,100,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3]}]
-  chart = new Chart(ctx).Line(data)
+  signs = []
+  stats = Stats.find({$and:[{timestamp:{$lte:new Date()}},{timestamp:{$gte:pushDate(31)}}]})
+  stats.forEach (stat) -> if not (stat.signature in signs) then signs.push stat.signature
+  if signs.length is 0
+    $("#panelStat").html("No mail sent for the moment")
+  else
+    ctx = document.getElementById("statChart").getContext("2d")
+    data = {}
+    data.labels = []
+    data.labels.push(pushDate(i).getDate()) for i in [30..0]
+    signsData = []
+    signsData.push([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]) for i in [0..signs.length]
+    stats.forEach (stat) ->
+      signsData[signs.indexOf stat.signature][30-Math.floor(( new Date() - stat.timestamp )/86400000)]
+    for n, i in signsData
+      do (n, i) ->
+        data.datasets.push 
+          fillColor:"rgba("+colorArray[i % 8]+",0.5)"
+          strokeColor:"rgba("+colorArray[i % 8]+",1)"
+          pointColor:"rgba("+colorArray[i % 8]+",1)"
+          pointStrokeColor:"fff"
+          data:n
+    chart = new Chart(ctx).Line(data)
   
-pushDate = (t, i) ->
+pushDate = (i) ->
   date=new Date()
   date.setDate(new Date().getDate()-i)
-  t.push(date.getDate())
+  return date

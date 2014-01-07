@@ -34,7 +34,7 @@
       "click i.glyphicon-pencil": (e) ->
         sign = Signatures.findOne({_id:$(e.target).attr("idSign")})
         $("#edit-signature-name").val(sign.name)
-        CKEDITOR.instances['edit-signature-content'].setData(sign.value.replace('PATHAPPDATA','/img/'))
+        CKEDITOR.instances['edit-signature-content'].setData(sign.value.replace('PATHAPPDATA','/cfs/files/images/'))
         $("#edit-signature-id").val(sign._id)
       
     @template = Meteor.render () ->
@@ -83,7 +83,7 @@ Template.newSignature.events
     if isNotAlreadyASameSignature(name, firm) and name isnt ""
       sign = Signatures.insert
         name: name
-        value: content.replace('/img/','PATHAPPDATA')
+        value: content.replace('/cfs/files/images/','PATHAPPDATA')
         firm: firm
         createdAt: new Date()
         img: null        
@@ -105,7 +105,7 @@ Template.editSignature.events
     id = t.find('#edit-signature-id').value  
     firm = Meteor.user().profile.firm
     if isNotAlreadyASameSignature(name, firm, id) and name isnt ""
-      Signatures.update(id,{$set: {name: name,value: content.replace('/img/','PATHAPPDATA')}})
+      Signatures.update(id,{$set: {name: name,value: content.replace('/cfs/files/images/','PATHAPPDATA')}})
       $('#previewSignature').html(content)
       html2canvas($('#previewSignature'),
         onrendered: (canvas) ->        
