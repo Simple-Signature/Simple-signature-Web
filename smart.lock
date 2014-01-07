@@ -25,7 +25,7 @@
       "collectionFS": {
         "git": "https://github.com/CollectionFS/Meteor-CollectionFS.git",
         "branch": "devel-merge",
-        "commit": "bf9281f04b3a7a0ff56942e2f040d8e6ccfcf158"
+        "commit": "6e34c0352e2eca85f7a32d43254a0b57ac26c674"
       },
       "cfs-filesystem": {
         "git": "https://github.com/CollectionFS/Meteor-cfs-filesystem.git",
@@ -60,17 +60,7 @@
       "power-queue": {
         "git": "https://github.com/CollectionFS/Meteor-powerqueue.git",
         "branch": "master",
-        "commit": "de3366d2b87e89a57145d39ca99efaa78d30f80d"
-      },
-      "reactive-property": {
-        "git": "https://github.com/CollectionFS/Meteor-reactive-property.git",
-        "branch": "master",
-        "commit": "f742b8656bb88fafff2a9c3a32ff1f97b3ebf2f7"
-      },
-      "reactive-list": {
-        "git": "https://github.com/CollectionFS/Meteor-reactive-list.git",
-        "branch": "master",
-        "commit": "174488eb6039ad8df3e04ae95785a24300a020ae"
+        "commit": "d82c4a185947c44532db2929d86855aa2f689a43"
       }
     }
   }

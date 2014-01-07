@@ -18,6 +18,3 @@ Meteor.autorun () ->
     stringArray = message.split('&amp;')
     ui.notify(stringArray[0], stringArray[1]).effect('slide').closable()
     Session.set('displayMessage', null)
-    
-Handlebars.registerHelper "prettifyDate", (date) ->
-  return date.toLocaleDateString() 

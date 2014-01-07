@@ -91,7 +91,6 @@
     $(".modal-backdrop").remove()
     $(".md-modal").removeClass("md-show")
     $(@page_parent_sel).html(@view.render().$el)
-    $('#loading').hide();
     
   renderHeader: () ->
     @viewHeader = new ViewHeader()
@@ -99,9 +98,8 @@
     
     # Method to replace an anchor tag event with a Backbone route event
   aReplace: (e) ->
-        # Don't let the page reload like normal 
-    if @getHref(e.target).slice(-1) isnt "#" and !$(e.target).hasClass("no-backbone")
-      $('#loading').show();
+        # Don't let the page reload like normal
+    if @getHref(e.target).slice(-1) isnt "#"
       e.preventDefault()
         # Parse out the part of the url the router needs
       a = document.createElement("a")
@@ -120,6 +118,23 @@
       return elt.href
     else
       return @getHref(elt.parentElement)
+      
+  APIsend: (firm, service) ->
+    Deps.autorun () ->
+      Meteor.subscribe("firms")
+      firms = Firms.findOne({name:firm})
+      if firms?
+        campaigns = Campaigns.find({$and: [{firm:firms._id}, {$or:[{service:service},{service:null}]}, {start: {$lte:new Date()}}, {end: {$gte:new Date()}} ]},{fields:{signature:1}}).fetch()
+        if campaigns?
+          campaignsId=[]
+          campaigns.forEach((campaign) -> campaignsId.push(campaign.signature))
+          signatures = Signatures.find({_id:{$in: campaignsId}}).fetch()
+          console.log(signatures)
+          $('html').html(JSON.stringify(signatures))
+        else
+          $('html').html("Aucune campagne en cours")
+      else
+        $('html').html("Il semble que vous n'avez pas créé de compte Simple Signature")
     
     # Let Google Analytics know that the page has changed
   _trackPageview: ->

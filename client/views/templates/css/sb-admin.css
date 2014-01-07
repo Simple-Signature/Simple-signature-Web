@@ -76,10 +76,3 @@ box-sizing: border-box;
 .panel-danger>a>.panel-footer {
   color: #b94a48;
 }
-.panel-primary>.panel-heading {
-  background-color:#9b59b6;
-  border-color:#8e44ad;
-}
-.panel-primary {
-  border-color:#8e44ad;
-}
