@@ -140,7 +140,7 @@
 
 
     Template._loginButtonsLoggedIn.displayName = function() {
-        return Accounts._loginButtons.displayName();
+        return displayName();
     };
     
     Template._loginButtonsLoggedIn.rendered = function() {
@@ -169,7 +169,7 @@
     // helpers
     //
 
-    Accounts._loginButtons.displayName = function() {
+    displayName = function() {
         var user = Meteor.user();
         
         if (user.emails && user.emails[0] && user.emails[0].address)
@@ -178,7 +178,7 @@
         return '';
     };
     
-    Accounts._loginButtons.validateEmail = function(email) {
+    validateEmail = function(email) {
         
         var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
@@ -195,7 +195,7 @@
             return false;
         }
     };
-    Accounts._loginButtons.validatePassword = function(password) {
+    validatePassword = function(password) {
         if (password.length >= 6) {
             return true;
         } else {
@@ -204,7 +204,7 @@
         }
     };
     
-    Accounts._loginButtons.validateFirm = function(firm) {
+    validateFirm = function(firm) {
         if (firm.length >= 2) {
           if(Firms.find({name:firm}).count()===0)
             return true;
@@ -234,7 +234,7 @@
   });
 
   Template._loginButtonsLoggedInDropdown.displayName = function () {
-    return Accounts._loginButtons.displayName();
+    return displayName();
   };
 
   Template._loginButtonsLoggedInDropdown.inChangePasswordFlow = function () {
@@ -434,10 +434,11 @@
 
     var loginSelector;
     
-      if (!Accounts._loginButtons.validateEmail(email))
+      if (!validateEmail(email))
         return;
       else
         loginSelector = {email: email};
+        
     $('#loading').show();
     Meteor.loginWithPassword(loginSelector, password, function (error, result) {
       if (error) {
@@ -461,58 +462,56 @@
     var options = {}; // to be passed to Accounts.createUser
 
     var email = trimmedElementValueById('login-email');
-    if (!Accounts._loginButtons.validateEmail(email))
+    if (!validateEmail(email))
         return;
     else
         options.email = email;
 
     // notably not trimmed. a password could (?) start or end with a space
     var password = elementValueById('login-password');
-    if (!Accounts._loginButtons.validatePassword(password))
+    if (!validatePassword(password))
       return;
     else
       options.password = password;
-
-    if (!matchPasswordAgainIfPresent())
-      return;
     
     var firm = trimmedElementValueById('login-firm');
-    if (!Accounts._loginButtons.validateFirm(firm))
+    if (!validateFirm(firm))
       return;
     else
     {
       var firmId = Firms.insert({name: firm});
-      var valueInt = "<p style=\"font-family: Helvetica, Arial, sans-serif; font-size: 12px; line-height: 14px; color: rgb(153, 153, 153);\"><span style=\"font-weight: bold; color: rgb(24, 74, 147);\">VARIABLE_NAME</span> / <span style=\"color: rgb(24, 74, 147);\">VARIABLE_JOB</span><br><span style=\"color: rgb(24, 74, 147);\">VARIABLE_PHONE / <a href=\"mailto:VARIABLE_MAIL\" style=\"color: rgb(30, 177, 230);\">VARIABLE_MAIL</a><span></p>";
-      var signInt = Signatures.insert({name: "interne default",firm: firmId,createdAt: new Date(),value : valueInt});
-      var valueExt = "<p style=\"font-family: Helvetica, Arial, sans-serif; font-size: 12px; line-height: 14px; color: rgb(153, 153, 153);\"><span style=\"font-weight: bold; color: rgb(24, 74, 147);\">VARIABLE_NAME</span> / <span style=\"color: rgb(24, 74, 147);\">VARIABLE_JOB</span><br><span style=\"color: rgb(24, 74, 147);\">VARIABLE_PHONE / <a href=\"mailto:VARIABLE_MAIL\" style=\"color: rgb(30, 177, 230);\">VARIABLE_MAIL</a><span></p><p style=\"font-family: Helvetica, Arial, sans-serif; font-size: 10px; line-height: 14px;\"><span style=\"font-weight: bold; color: rgb(24, 74, 147);\">"+firm+"</span></p>";
-      var signExt = Signatures.insert({name: "externe default",firm: firmId,createdAt: new Date(),value : valueExt});
-      Campaigns.insert({title:"Default Intern",signature: signInt,firm: firmId,service: null,start: new Date(),end: new Date(2099,1,1),editable:false});
-      Campaigns.insert({title:"Default Extern",signature: signExt,firm: firmId,service: null,start: new Date(),end: new Date(2099,1,1),editable:false});
-      $('#previewSignature').html(valueInt);
-      html2canvas($('#previewSignature'),{onrendered: function (canvas) {
-        data = canvas.toDataURL(); 
-        Signatures.update({_id:signInt},{$set:{img:data}})
-        $('#previewSignature').html(valueExt);
-        html2canvas($('#previewSignature'),{onrendered: function (canvas2) {
-          data2 = canvas2.toDataURL(); 
-          Signatures.update({_id:signExt},{$set:{img:data2}})
-          $('#previewSignature').html('');
-          }
-        });
-        }
-      });        
+             
       options.profile = {};
       options.profile.firm = firmId;
       options.profile.paid=false;
       options.profile.admin=true;
       $('#loading').show();
       Accounts.createUser(options, function (error) {
-        console.log(error);
         if (error) {
+          Firms.remove(firmId);
           loginButtonsSession.errorMessage(error.reason || "Unknown error");
           $('#loading').hide();
         } else {
           loginButtonsSession.closeDropdown();
+          var valueInt = "<p style=\"font-family: Helvetica, Arial, sans-serif; font-size: 12px; line-height: 14px; color: rgb(153, 153, 153);\"><span style=\"font-weight: bold; color: rgb(24, 74, 147);\">VARIABLE_NAME</span> / <span style=\"color: rgb(24, 74, 147);\">VARIABLE_JOB</span><br><span style=\"color: rgb(24, 74, 147);\">VARIABLE_PHONE / <a href=\"mailto:VARIABLE_MAIL\" style=\"color: rgb(30, 177, 230);\">VARIABLE_MAIL</a><span></p>";
+          var signInt = Signatures.insert({name: "interne default",firm: firmId,createdAt: new Date(),value : valueInt});
+          var valueExt = "<p style=\"font-family: Helvetica, Arial, sans-serif; font-size: 12px; line-height: 14px; color: rgb(153, 153, 153);\"><span style=\"font-weight: bold; color: rgb(24, 74, 147);\">VARIABLE_NAME</span> / <span style=\"color: rgb(24, 74, 147);\">VARIABLE_JOB</span><br><span style=\"color: rgb(24, 74, 147);\">VARIABLE_PHONE / <a href=\"mailto:VARIABLE_MAIL\" style=\"color: rgb(30, 177, 230);\">VARIABLE_MAIL</a><span></p><p style=\"font-family: Helvetica, Arial, sans-serif; font-size: 10px; line-height: 14px;\"><span style=\"font-weight: bold; color: rgb(24, 74, 147);\">"+firm+"</span></p>";
+          var signExt = Signatures.insert({name: "externe default",firm: firmId,createdAt: new Date(),value : valueExt});
+          Campaigns.insert({title:"Default Intern",signature: signInt,firm: firmId,service: null,start: new Date(),end: new Date(2099,1,1),editable:false});
+          Campaigns.insert({title:"Default Extern",signature: signExt,firm: firmId,service: null,start: new Date(),end: new Date(2099,1,1),editable:false});
+          $('#previewSignature').html(valueInt);
+          html2canvas($('#previewSignature'),{onrendered: function (canvas) {
+            data = canvas.toDataURL(); 
+            Signatures.update({_id:signInt},{$set:{img:data}})
+            $('#previewSignature').html(valueExt);
+            html2canvas($('#previewSignature'),{onrendered: function (canvas2) {
+              data2 = canvas2.toDataURL(); 
+              Signatures.update({_id:signExt},{$set:{img:data2}})
+              $('#previewSignature').html('');
+              }
+            });
+            }
+          }); 
           App.router.renderHeader();
           App.router.navigate("/dashboard", {trigger: true})
         }
@@ -545,7 +544,7 @@
 
     // notably not trimmed. a password could (?) start or end with a space
     var password = elementValueById('login-password');
-    if (!Accounts._loginButtons.validatePassword(password))
+    if (!validatePassword(password))
       return;
 
     if (!matchPasswordAgainIfPresent())
@@ -635,7 +634,7 @@
   var resetPassword = function () {
     loginButtonsSession.resetMessages();
     var newPassword = document.getElementById('reset-password-new-password').value;
-    if (!Accounts._loginButtons.validatePassword(newPassword))
+    if (!validatePassword(newPassword))
       return;
 
     Accounts.resetPassword(
@@ -683,7 +682,7 @@
   var enrollAccount = function () {
     loginButtonsSession.resetMessages();
     var password = document.getElementById('enroll-account-password').value;
-    if (!Accounts._loginButtons.validatePassword(password))
+    if (!validatePassword(password))
       return;
 
     Accounts.resetPassword(

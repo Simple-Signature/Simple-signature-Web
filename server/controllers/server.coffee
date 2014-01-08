@@ -6,41 +6,49 @@
 Meteor.users.allow
     # A user can update their own record
   update: (userId, doc) ->
-    currentUser = Meteor.users.findOne({_id:@userId})
-    firmIdAdmin = Meteor.users.findOne({_id:userId}).firm
-    return userId == @userId || (currentUser.firm == firmIdAdmin && currentUser.admin)
+    if userId == @userId
+      return true
+    else 
+      currentUser = Meteor.users.findOne(this.userId)
+      firmIdAdmin = Meteor.users.findOne(userId).profile.firm
+      return currentUser.firm is firmIdAdmin and currentUser.admin
 
 # Publish the collection to the client
 Meteor.publish "services", ->
   if this.userId?
-    firmId = Meteor.users.findOne({_id:@userId}).profile.firm
-    return Services.find({ firm: firmId })
+    user = Meteor.users.findOne(this.userId)
+    if user && user.profile && user.profile.firm
+      return Services.find({ firm: user.profile.firm })
     
 Meteor.publish "firms", () ->
   return Firms.find()
 
 Meteor.publish "campaigns", () ->
   if this.userId?
-    firmId = Meteor.users.findOne({_id:@userId}).profile.firm
-    return Campaigns.find({ firm: firmId })
+    user = Meteor.users.findOne(this.userId)
+    if user && user.profile && user.profile.firm
+      return Campaigns.find({ firm: user.profile.firm })
   
 Meteor.publish "signatures", () ->
   if this.userId?
-    firmId = Meteor.users.findOne({_id:@userId}).profile.firm
-    return Signatures.find({ firm: firmId })
+    user = Meteor.users.findOne(this.userId)
+    if user && user.profile && user.profile.firm
+      return Signatures.find({ firm: user.profile.firm })
 
 Meteor.publish 'images', () ->
   if this.userId?
-    firmId = Meteor.users.findOne({_id:@userId}).profile.firm
-    return FirmsImages.find({ 'metadata.firm': firmId })
+    user = Meteor.users.findOne(this.userId)
+    if user && user.profile && user.profile.firm
+      return FirmsImages.find({ 'metadata.firm': user.profile.firm })
 
 Meteor.publish 'stats', () ->
   if this.userId?
-    firmId = Meteor.users.findOne({_id:@userId}).profile.firm
-    return Stats.find({ firm: firmId })
+    user = Meteor.users.findOne(this.userId)
+    if user && user.profile && user.profile.firm
+      return Stats.find({ firm: user.profile.firm })
   
 Meteor.Router.add
-  '/API/:firm/:service': (firm, service) ->
+  '/API/signs/:firm/:service': (firm, service) ->
     this.response.setHeader("Access-Control-Allow-Origin","*")
     this.response.setHeader("Access-Control-Allow-Headers","X-Requested-With")
     firms = Firms.findOne({name:firm})
@@ -67,7 +75,7 @@ Meteor.Router.add
       return [400,"Il semble que vous n'avez pas créé de compte Simple Signature"]
 
 Meteor.Router.add
-  '/API/:firm': (firm) ->
+  '/API/signs/:firm': (firm) ->
     this.response.setHeader("Access-Control-Allow-Origin","*")
     this.response.setHeader("Access-Control-Allow-Headers","X-Requested-With")
     firms = Firms.findOne({name:firm})
@@ -86,7 +94,7 @@ Meteor.Router.add
       return [400,"Il semble que vous n'avez pas créé de compte Simple Signature"]
 
 Meteor.Router.add
-  '/API/:firm/:signature/:externe/:interne': (firm, signature, externe, interne) ->
+  '/API/stats/:firm/:signature/:externe/:interne': (firm, signature, externe, interne) ->
     this.response.setHeader("Access-Control-Allow-Origin","*")
     this.response.setHeader("Access-Control-Allow-Headers","X-Requested-With")
     Stats.insert
@@ -96,10 +104,3 @@ Meteor.Router.add
       interne:interne
       timestamp:new Date()
     return [200,"OK"]
-    
-Accounts.onCreateUser (options, user) ->
-  console.log(options)
-  console.log(user)
-  if options.profile?
-    user.profile = options.profile
-  return user

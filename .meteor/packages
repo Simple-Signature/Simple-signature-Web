@@ -10,8 +10,8 @@ router
 backbone
 coffeescript
 handlebars
-accounts-password
-accounts-base
 collectionFS
 cfs-filesystem
 cfs-handlebars
+accounts-base
+accounts-password

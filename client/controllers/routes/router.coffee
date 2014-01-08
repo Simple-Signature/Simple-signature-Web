@@ -80,7 +80,7 @@
         # Pages that are "internal" can only be viewed by a logged in user
     
         # If all is well, go to the requested page!
-    if !internal or (Meteor.userId()? and Meteor.user()? and Meteor.user().profile?)
+    if !internal or (Meteor.userId()? and Meteor.user()?)
       @view = new viewClass(params)
       @render()
     else
@@ -107,6 +107,10 @@
       a = document.createElement("a")
       a.href = @getHref(e.target)
       route = a.pathname + a.search
+      
+      if "/#{Backbone.history.getFragment()}" == route
+        $('#loading').hide();
+        
         # Route using the Backbone router without a page refresh
       @navigate(route, {trigger: true})
 
