@@ -43,6 +43,7 @@ Template.dashboard.rendered = () ->
     ctx = document.getElementById("statChart").getContext("2d")
     data = {}
     data.labels = []
+    data.datasets = []
     data.labels.push(pushDate(i).getDate()) for i in [30..0]
     signsData = []
     signsData.push([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]) for i in [0..signs.length]
@@ -56,6 +57,7 @@ Template.dashboard.rendered = () ->
           pointColor:"rgba("+colorArray[i % 8]+",1)"
           pointStrokeColor:"fff"
           data:n
+    console.log(data)
     chart = new Chart(ctx).Line(data)
   
 pushDate = (i) ->

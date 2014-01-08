@@ -22,7 +22,6 @@
         </div><!-- /.row -->
       <div class="container"><button class="md-trigger btn btn-primary" data-modal="newSignatureModal">Créer une nouvelle signature</button></div>
       <br />
-      <div class="container">
         <table class="table table-striped"> 
           <tr>
             <th>Nom</th>
@@ -35,7 +34,7 @@
           <tr>
             <td>{{name}}</td>
             <td>{{prettifyDate createdAt}}</td>
-            <td><img src="{{{img}}}" style='max-height:50px'/></td>
+            <td><img src="{{{img}}}"/></td>
             <td><i class="glyphicon glyphicon-pencil md-trigger" idSign="{{_id}}" data-modal="editSignatureModal"></td>
             <td><i class="glyphicon glyphicon-remove" idSign="{{_id}}"></td>
           </tr>       
