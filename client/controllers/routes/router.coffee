@@ -7,9 +7,9 @@
     "signatures": "signatures"	
     "campaigns": "campaigns"		
     "account": "account"
-    "services/:id": "service"
     "services": "services"
     "dashboard": "dashboard"
+    "users": "users"
     "images": "images"
     "signup": "signup"
     "": "home"
@@ -47,42 +47,45 @@
     @.go Home
 
   signatures: () ->
-    @.go ViewSignatures, true
+    @.go ViewSignatures, true, false
 
   campaigns: () ->
-    @.go ViewCampaigns, true
+    @.go ViewCampaigns, true, false
         
   services: () ->
-    @.go ViewServices, true
-
-  service: () ->
-    @.go ViewService, true, id
+    @.go ViewServices, true, true
         
   account: () ->
-    @.go ViewAccount, true
+    @.go ViewAccount, true, false
         
   dashboard: () ->
-    @.go ViewDashboard, true
+    @.go ViewDashboard, true, false
     
   images: () ->
-    @.go ViewImages, true
+    @.go ViewImages, true, false
+    
+  users: () ->
+    @.go ViewUsers, true, true
 
   notFound: () ->
-    @.go ViewNotFound
+    @.go ViewNotFound, false
 
   signup: () ->
-    @.go ViewSignup
+    @.go ViewSignup, false
 
     # Actually changes the page by creating the view and inserting it
-  go: (viewClass, internal, params) ->
+  go: (viewClass, internal, paid, params) ->
     if !viewClass?
       viewClass = ViewNotFound 
         # Pages that are "internal" can only be viewed by a logged in user
     
         # If all is well, go to the requested page!
     if !internal or (Meteor.userId()? and Meteor.user()?)
-      @view = new viewClass(params)
-      @render()
+      if !paid or Meteor.user().profile.paid
+        @view = new viewClass(params)
+        @render()
+      else
+        @navigate("/signup", {trigger: true})
     else
       @navigate("/404", {trigger: true})
 
