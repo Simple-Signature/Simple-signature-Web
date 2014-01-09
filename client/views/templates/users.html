@@ -21,7 +21,7 @@
             </ol>
           </div>
         </div><!-- /.row -->
-      <div class="container"><button class="md-trigger btn btn-primary" data-modal="newUserModal">Créer un nouvel utilisateur</button></div>
+      <div class="container">{{#if paid}}<button class="md-trigger btn btn-primary" data-modal="newUserModal">Créer un nouvel utilisateur</button>{{else}}<a class="btn btn-primary" href="/signup">Créer un nouvel utilisateur</a>{{/if}}</div>
       <br />
       <div class="well col-xs-8 col-sm-8 col-md-8 col-lg-8 col-xs-offset-2 col-sm-offset-2 col-md-offset-2 col-lg-offset-2">
       {{#each users}}
@@ -30,10 +30,10 @@
                 <img class="img-circle" src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=50" alt="User Pic">
             </div>
             <div class="col-xs-8 col-sm-9 col-md-10 col-lg-10">
-                <strong>{{emails[0].address}}</strong><br>
+                <strong>name</strong><br>
                 <span class="text-muted">User level: {{#if profile.admin}}Administrator{{else}}Moderator{{/if}}</span>
             </div>
-            <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 dropdown-user" data-for="{{_id}}">
+            <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 dropdown-user" data-for="#{{_id}}">
                 <i class="glyphicon glyphicon-chevron-down text-muted"></i>
             </div>
         </div>
@@ -56,7 +56,7 @@
                                      alt="User Pic">
                             </div>
                             <div class="col-xs-10 col-sm-10 hidden-md hidden-lg">
-                                <strong>{{emails[0].address}}</strong><br>
+                                <strong>name</strong><br>
                                 <dl>
                                     <dt>User level:</dt>
                                     <dd>{{#if profile.admin}}Administrator{{else}}Moderator{{/if}}</dd>
@@ -65,7 +65,7 @@
                                 </dl>
                             </div>
                             <div class=" col-md-9 col-lg-9 hidden-xs hidden-sm">
-                                <strong>{{emails[0].address}}</strong><br>
+                                <strong>name</strong><br>
                                 <table class="table table-user-information">
                                     <tbody>
                                     <tr>
@@ -84,8 +84,8 @@
                     <div class="panel-footer">
                         <a class="btn btn-sm btn-primary no-backbone" type="button" data-toggle="tooltip" data-original-title="Send message to user"><i class="glyphicon glyphicon-envelope"></i></a>
                         <span class="pull-right">
-                            <button class="btn btn-sm btn-warning" type="button" data-toggle="tooltip" data-original-title="Edit this user"><i class="glyphicon glyphicon-pencil" idUser="{{_id}}" data-modal="editUserModal"></i></button>
-                            <button class="btn btn-sm btn-danger" type="button" data-toggle="tooltip" data-original-title="Remove this user"><i class="glyphicon glyphicon-remove" idUser="{{_id}}"></i></button>
+                            <button class="btn btn-sm btn-warning editUserButton md-trigger" idUser="{{_id}}" type="button" data-toggle="tooltip" data-original-title="Edit this user" data-modal="editUserModal"><i class="glyphicon glyphicon-pencil"></i></button>
+                            <button class="btn btn-sm btn-danger removeUserButton" idUser="{{_id}}" type="button" data-toggle="tooltip" data-original-title="Remove this user"><i class="glyphicon glyphicon-remove" ></i></button>
                         </span>
                     </div>
                 </div>

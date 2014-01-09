@@ -31,13 +31,19 @@
         return false
       "click a": (e) ->
         App.router.aReplace(e)
-      "click i.glyphicon-pencil": (e) ->
-        sign = Signatures.findOne($(e.target).attr("idSign"))
+      "click .editSignButton": (e) ->
+        id = $(e.target).attr("idSign")
+        if !id?
+          id = $(e.target).parent().attr("idSign")
+        sign = Signatures.findOne(id)
         $("#edit-signature-name").val(sign.name)
         CKEDITOR.instances['edit-signature-content'].setData(sign.value.replace('PATHAPPDATA','/cfs/files/images/'))
         $("#edit-signature-id").val(sign._id)
-      "click i.glyphicon-remove": (e) ->
-        Signatures.remove($(e.target).attr("idSign"))
+      "click .removeSignButton": (e) ->
+        id = $(e.target).attr("idSign")
+        if !id?
+          id = $(e.target).parent().attr("idSign")
+        Signatures.remove(id)
         
       
     @template = Meteor.render () ->
@@ -50,6 +56,7 @@
 
 Template.signatures.rendered = () ->
   ModalEffects()
+  $('[data-toggle="tooltip"]').tooltip()
   CKEDITOR.replace('new-signature-content',
     toolbar: [
       { name: 'document', groups: [ 'mode', 'doctools' ], items: [ 'Source', '-', 'Templates' ] },

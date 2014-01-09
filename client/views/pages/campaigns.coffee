@@ -38,12 +38,12 @@ Template.campaigns.rendered = () ->
     events: Campaigns.find({firm: Meteor.user().profile.firm}).fetch()
     eventResize: (campaign, dayDelta,minuteDelta,revertFunc) ->
       if Meteor.user().profile.paid or isNotAlreadyThreeCampaigns(campaign.firm, campaign.start, campaign.end, campaign._id)
-        Campaigns.update({_id: campaign._id},$set: {end:campaign.end})
+        Campaigns.update(campaign._id,$set: {end:campaign.end})
       else
         revertFunc()
     eventDrop: (campaign, dayDelta,minuteDelta,allDay,revertFunc) ->
       if Meteor.user().profile.paid or isNotAlreadyThreeCampaigns(campaign.firm, campaign.start, campaign.end, campaign._id)
-        Campaigns.update({_id: campaign._id},$set: {end:campaign.end, start:campaign.start})
+        Campaigns.update(campaign._id,$set: {end:campaign.end, start:campaign.start})
       else
         revertFunc()
     eventClick: (campaign,event) ->
@@ -54,21 +54,21 @@ Template.newCampaign.helpers
       services: -> return Services.find({firm: Meteor.user().profile.firm})
 
 Template.detailsCampaign.helpers 
-      campaign: -> return Campaigns.findOne({_id: Session.get('displayCampaign')})
+      campaign: -> return Campaigns.findOne(Session.get('displayCampaign'))
       signature: -> 
-        camp = Campaigns.findOne({_id: Session.get('displayCampaign')})
+        camp = Campaigns.findOne(Session.get('displayCampaign'))
         if camp?
-          return Signatures.findOne({_id:camp.signature})
+          return Signatures.findOne(camp.signature)
         else return null
       canDelete: ->
-        camp = Campaigns.findOne({_id: Session.get('displayCampaign')})
+        camp = Campaigns.findOne(Session.get('displayCampaign'))
         if camp? and (camp.title is "Default Extern" or camp.title is "Default Intern")
           return false
         else return true
 Template.detailsCampaign.events
   "click #cancel" : (e,t) ->
     if Session.get('displayCampaign')? and Session.get('displayCampaign') isnt ""
-      Campaigns.remove({_id:Session.get('displayCampaign')})
+      Campaigns.remove(Session.get('displayCampaign'))
 Template.newCampaign.events
   "submit" : (e,t) ->
     e.preventDefault();

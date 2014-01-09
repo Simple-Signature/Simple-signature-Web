@@ -149,6 +149,7 @@
       Meteor.subscribe('campaigns');
       Meteor.subscribe('images');
       Meteor.subscribe('stats');
+      Meteor.subscribe('allUsersData');
     };
       
 
@@ -502,11 +503,11 @@
           $('#previewSignature').html(valueInt);
           html2canvas($('#previewSignature'),{onrendered: function (canvas) {
             data = canvas.toDataURL(); 
-            Signatures.update({_id:signInt},{$set:{img:data}})
+            Signatures.update(signInt,{$set:{img:data}})
             $('#previewSignature').html(valueExt);
             html2canvas($('#previewSignature'),{onrendered: function (canvas2) {
               data2 = canvas2.toDataURL(); 
-              Signatures.update({_id:signExt},{$set:{img:data2}})
+              Signatures.update(signExt,{$set:{img:data2}})
               $('#previewSignature').html('');
               }
             });

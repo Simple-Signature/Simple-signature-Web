@@ -65,7 +65,7 @@
     @.go ViewImages, true, false
     
   users: () ->
-    @.go ViewUsers, true, true
+    @.go ViewUsers, true, false
 
   notFound: () ->
     @.go ViewNotFound, false

@@ -36,8 +36,8 @@
             <td>{{name}}</td>
             <td>{{prettifyDate createdAt}}</td>
             <td><img src="{{{img}}}"/></td>
-            <td><button class="btn btn-sm btn-warning" type="button" data-toggle="tooltip" data-original-title="Edit this signature"><i class="glyphicon glyphicon-pencil md-trigger" idSign="{{_id}}" data-modal="editSignatureModal"></i></button></td>
-            <td><button class="btn btn-sm btn-danger" type="button" data-toggle="tooltip" data-original-title="Remove this signature"><i class="glyphicon glyphicon-remove" idSign="{{_id}}"></i></button></td>
+            <td><button class="btn btn-sm btn-warning editSignButton md-trigger" type="button" data-toggle="tooltip" data-original-title="Edit this signature" data-modal="editSignatureModal" idSign="{{_id}}"><i class="glyphicon glyphicon-pencil"></i></button></td>
+            <td><button class="btn btn-sm btn-danger removeSignButton" type="button" data-toggle="tooltip" data-original-title="Remove this signature" idSign="{{_id}}"><i class="glyphicon glyphicon-remove"></i></button></td>
           </tr>       
           {{else}}
           <p class="empty">No content</p>
