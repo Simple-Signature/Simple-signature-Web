@@ -46,9 +46,9 @@ Template.dashboard.rendered = () ->
     data.datasets = []
     data.labels.push(pushDate(i).getDate()) for i in [30..0]
     signsData = []
-    signsData.push([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]) for i in [0..signs.length]
+    signsData.push([0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]) for i in [0...signs.length]
     stats.forEach (stat) ->
-      signsData[signs.indexOf stat.signature][30-Math.floor(( new Date() - stat.timestamp )/86400000)]
+      signsData[signs.indexOf stat.signature][30-Math.floor(( new Date() - stat.timestamp )/86400000)]+=1
     for n, i in signsData
       do (n, i) ->
         data.datasets.push 

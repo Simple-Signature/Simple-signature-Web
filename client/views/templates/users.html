@@ -1,0 +1,151 @@
+<template name="users">
+<div>
+      <ul class="nav nav-pills nav-stacked side-nav">
+            <li><a href="/dashboard"><i class="glyphicon glyphicon-stats"></i> Dashboard</a></li>
+            <li><a href="/signatures"><i class="glyphicon glyphicon-bullhorn"></i> Signatures</a></li>
+            <li><a href="/images"><i class="glyphicon glyphicon-picture"></i> Images</a></li>
+            <li><a href="/campaigns"><i class="glyphicon glyphicon-calendar"></i> Campaigns</a></li>
+            {{#if admin}}
+            <li class="active"><a href="/users"><i class="glyphicon glyphicon-user"></i> Users</a></li>
+            <li><a href="/services"><i class="glyphicon glyphicon-user"></i> Services</a></li>
+            {{/if}}
+      </ul>
+
+    </div>
+
+    <div id="page-wrapper">
+      <div class="row">
+          <div class="col-lg-12">
+            <ol class="breadcrumb">
+              <li class="active"><i class="glyphicon glyphicon-user"></i> Users</li>
+            </ol>
+          </div>
+        </div><!-- /.row -->
+      <div class="container"><button class="md-trigger btn btn-primary" data-modal="newUserModal">Créer un nouvel utilisateur</button></div>
+      <br />
+      <div class="well col-xs-8 col-sm-8 col-md-8 col-lg-8 col-xs-offset-2 col-sm-offset-2 col-md-offset-2 col-lg-offset-2">
+      {{#each users}}
+        <div class="row user-row">
+            <div class="col-xs-3 col-sm-2 col-md-1 col-lg-1">
+                <img class="img-circle" src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=50" alt="User Pic">
+            </div>
+            <div class="col-xs-8 col-sm-9 col-md-10 col-lg-10">
+                <strong>{{emails[0].address}}</strong><br>
+                <span class="text-muted">User level: {{#if profile.admin}}Administrator{{else}}Moderator{{/if}}</span>
+            </div>
+            <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 dropdown-user" data-for="{{_id}}">
+                <i class="glyphicon glyphicon-chevron-down text-muted"></i>
+            </div>
+        </div>
+        <div class="row user-infos" id="{{_id}}">
+            <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10 col-xs-offset-0 col-sm-offset-0 col-md-offset-1 col-lg-offset-1">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">User information</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-3 col-lg-3 hidden-xs hidden-sm">
+                                <img class="img-circle"
+                                     src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=100"
+                                     alt="User Pic">
+                            </div>
+                            <div class="col-xs-2 col-sm-2 hidden-md hidden-lg">
+                                <img class="img-circle"
+                                     src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=50"
+                                     alt="User Pic">
+                            </div>
+                            <div class="col-xs-10 col-sm-10 hidden-md hidden-lg">
+                                <strong>{{emails[0].address}}</strong><br>
+                                <dl>
+                                    <dt>User level:</dt>
+                                    <dd>{{#if profile.admin}}Administrator{{else}}Moderator{{/if}}</dd>
+                                    <dt>Registered since:</dt>
+                                    <dd>{{prettifyDate createdAt}}</dd>
+                                </dl>
+                            </div>
+                            <div class=" col-md-9 col-lg-9 hidden-xs hidden-sm">
+                                <strong>{{emails[0].address}}</strong><br>
+                                <table class="table table-user-information">
+                                    <tbody>
+                                    <tr>
+                                        <td>User level:</td>
+                                        <td>{{#if profile.admin}}Administrator{{else}}Moderator{{/if}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Registered since:</td>
+                                        <td>{{prettifyDate createdAt}}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-footer">
+                        <a class="btn btn-sm btn-primary no-backbone" type="button" data-toggle="tooltip" data-original-title="Send message to user"><i class="glyphicon glyphicon-envelope"></i></a>
+                        <span class="pull-right">
+                            <button class="btn btn-sm btn-warning" type="button" data-toggle="tooltip" data-original-title="Edit this user"><i class="glyphicon glyphicon-pencil" idUser="{{_id}}" data-modal="editUserModal"></i></button>
+                            <button class="btn btn-sm btn-danger" type="button" data-toggle="tooltip" data-original-title="Remove this user"><i class="glyphicon glyphicon-remove" idUser="{{_id}}"></i></button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{/each}}
+      </div>
+       
+    </div>  
+      <div class="md-modal md-effect-12" id="newUserModal">
+  			 <div class="md-content">
+  			   <button type="button" class="close md-close"aria-hidden="true">&times;</button>
+  			   <h3>Nouvel Utilisateur</h3>
+  			   <div>
+  					 {{> newUser}}
+  				</div>
+  			</div>
+  		</div>
+  		<div class="md-modal md-effect-12" id="editUserModal">
+  			 <div class="md-content">
+  			   <button type="button" class="close md-close"aria-hidden="true">&times;</button>
+  			   <h3>Édition de l'utilisateur</h3>
+  			   <div>
+  					 {{> editUser}}
+  				</div>
+  			</div>
+  		</div>
+  		<div class="md-overlay"></div>
+    </div><!-- /#page-wrapper -->
+</template>
+
+<template name="newUser">
+  <form id="new-user-form" class="form">
+      <div class="form-group">
+        <label class="sr-only" for="new-user-email">Email</label>
+        <input type="email" class="form-control" id="new-user-email" placeholder="Email" required/>
+      </div>
+      <div class="form-group">
+        <label class="sr-only" for="new-user-password">Password</label>
+        <input type="email" class="form-control" id="new-user-password" placeholder="Password" required/>
+      </div>
+      <div class="form-group">
+        <button type="submit" id="create-new-user" class="btn btn-default">Create</button>
+      </div>
+  </form>
+</template>
+
+<template name="editUser">
+  <form id="edit-user-form" class="form">
+    <input type="hidden" id="edit-user-id"/>
+      <div class="form-group">
+        <label class="sr-only" for="edit-user-email">Email</label>
+        <input type="email" class="form-control" id="edit-user-email" placeholder="Email" required/>
+      </div>
+      <div class="form-group">
+        <label class="sr-only" for="edit-user-password">Password</label>
+        <input type="email" class="form-control" id="edit-user-password" placeholder="Password" required/>
+      </div>
+      <div class="form-group">
+        <button type="submit" id="create-new-user" class="btn btn-default">Create</button>
+      </div>
+  </form>
+</template>

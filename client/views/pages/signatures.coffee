@@ -32,10 +32,13 @@
       "click a": (e) ->
         App.router.aReplace(e)
       "click i.glyphicon-pencil": (e) ->
-        sign = Signatures.findOne({_id:$(e.target).attr("idSign")})
+        sign = Signatures.findOne($(e.target).attr("idSign"))
         $("#edit-signature-name").val(sign.name)
         CKEDITOR.instances['edit-signature-content'].setData(sign.value.replace('PATHAPPDATA','/cfs/files/images/'))
         $("#edit-signature-id").val(sign._id)
+      "click i.glyphicon-remove": (e) ->
+        Signatures.remove($(e.target).attr("idSign"))
+        
       
     @template = Meteor.render () ->
       return Template.signatures()
