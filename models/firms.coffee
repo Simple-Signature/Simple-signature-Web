@@ -20,19 +20,19 @@ else @FirmsImages = new FS.Collection('images')
 @FirmsImages.allow
   insert: (userId, file) ->
     if userId?
-      firmId = Meteor.users.findOne({_id:userId}).firm
+      firmId = Meteor.users.findOne(userId).profile.firm
       return file.firm == firmId
     else return false
   update: (userId, files, fields, modifier) ->
     if userId?
-      firmId = Meteor.users.findOne({_id:userId}).firm
+      firmId = Meteor.users.findOne(userId).profile.firm
       return _.all(files, (file) ->
         return firmId == file.firm
       )
     else return false
   remove: (userId, files) ->
     if userId?
-      firmId = Meteor.users.findOne({_id:userId}).firm
+      firmId = Meteor.users.findOne(userId).profile.firm
       return _.all(files, (file) ->
         return firmId == file.firm
       )
