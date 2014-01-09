@@ -7,6 +7,7 @@
             <li class="active"><a href="/campaigns"><i class="glyphicon glyphicon-calendar"></i> Campaigns</a></li>
             {{#if admin}}
             <li><a href="/users"><i class="glyphicon glyphicon-user"></i> Users</a></li>
+            <li><a href="/services"><i class="glyphicon glyphicon-user"></i> Services</a></li>
             {{/if}}
       </ul>
 
@@ -81,8 +82,8 @@
 <template name="detailsCampaign">
   {{#if campaign}}
   <p>Nom de la campagne : <strong>{{campaign.title}}</strong></p>
-  <p>Date de début : <strong>{{campaign.start}}</strong></p>
-  <p>Date de fin : <strong>{{campaign.end}}</strong></p>
+  <p>Date de début : <strong>{{prettifyDate campaign.start}}</strong></p>
+  <p>Date de fin : <strong>{{prettifyDate campaign.end}}</strong></p>
   <p><img src="{{{signature.img}}}" height='50px'/></p> 
   {{#if canDelete}}
   <p><button class="btn btn-sm btn-danger" id="cancel">Cancel the campaign</button></p>
