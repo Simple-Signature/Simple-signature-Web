@@ -30,7 +30,7 @@
                 <img class="img-circle" src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=50" alt="User Pic">
             </div>
             <div class="col-xs-8 col-sm-9 col-md-10 col-lg-10">
-                <strong>name</strong><br>
+                <strong>{{emails.0.address}}</strong><br>
                 <span class="text-muted">User level: {{#if profile.admin}}Administrator{{else}}Moderator{{/if}}</span>
             </div>
             <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 dropdown-user" data-for="#{{_id}}">
@@ -56,7 +56,7 @@
                                      alt="User Pic">
                             </div>
                             <div class="col-xs-10 col-sm-10 hidden-md hidden-lg">
-                                <strong>name</strong><br>
+                                <strong>{{emails.0.address}}</strong><br>
                                 <dl>
                                     <dt>User level:</dt>
                                     <dd>{{#if profile.admin}}Administrator{{else}}Moderator{{/if}}</dd>
@@ -65,7 +65,7 @@
                                 </dl>
                             </div>
                             <div class=" col-md-9 col-lg-9 hidden-xs hidden-sm">
-                                <strong>name</strong><br>
+                                <strong>{{emails.0.address}}</strong><br>
                                 <table class="table table-user-information">
                                     <tbody>
                                     <tr>
