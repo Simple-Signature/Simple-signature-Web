@@ -1,14 +1,16 @@
 <template name="notFound">
+  <video id = "video_background" preload="auto" autoplay="true" loop="loop" muted="muted" volume="0">
+    <source src="/assets/video/major kong.mp4" type="video/mp4">
+  </video>
             <div class="error-template">
-                <h1>Oops!</h1>
-                <h2>
-                    404 Not Found</h2>
+                <h1>{{i18n "notfound.oops"}}</h1>
+                <h2>{{i18n "notfound.notfound"}}</h2>
                 <div class="error-details">
-                    Sorry, an error has occured, Requested page not found!
+                    {{i18n "notfound.error"}}
                 </div>
                 <div class="error-actions">
-                    <a href="/" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-home"></span>
-                        Take Me Home </a><a href="/support" class="btn btn-default btn-lg"><span class="glyphicon glyphicon-envelope"></span> Contact Support </a>
+                    <a href="/" class="btn btn-primary btn-lg"><i class="icon-home"></i> {{i18n "notfound.home"}}</a>
+                    <a href="mailto:mathieu@dutour.me?subject=[{{config "app_name"}}]" class="btn btn-default btn-lg no-backbone"><i class="icon-support"></i> {{i18n "notfound.support"}}</a>
                 </div>
             </div>
 </template>

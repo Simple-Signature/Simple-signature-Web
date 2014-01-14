@@ -19,21 +19,24 @@ else @FirmsImages = new FS.Collection('images')
 
 @FirmsImages.allow
   insert: (userId, file) ->
-    if userId?
+    if userId? and file.metadata.title? and file.metadata.firm?
       firmId = Meteor.users.findOne(userId).profile.firm
-      return file.firm == firmId
+      return file.metadata.firm == firmId and isNotAlreadyASameImage(file.metadata.title, firmId)
     else return false
-  update: (userId, files, fields, modifier) ->
-    if userId?
-      firmId = Meteor.users.findOne(userId).profile.firm
-      return _.all(files, (file) ->
-        return firmId == file.firm
-      )
-    else return false
+  update: (userId, files, fields, modifiers) ->
+    return false
   remove: (userId, files) ->
     if userId?
       firmId = Meteor.users.findOne(userId).profile.firm
-      return _.all(files, (file) ->
-        return firmId == file.firm
-      )
+      if files.length?
+        return _.all(files, (file) ->
+          return firmId == file.metadata.firm
+        )
+      else return firmId == files.metadata.firm
     else return false
+
+isNotAlreadyASameImage = (title, firm) ->
+  if FirmsImages.find({'metadata.title':title, 'metadata.firm': firm}).count() is 0
+    return true
+  else
+    return false; 

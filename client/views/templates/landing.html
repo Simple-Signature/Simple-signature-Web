@@ -3,14 +3,17 @@
 
       <div class="headline">
         <div class="container">
-          <h1>Simple Signature</h1>
-          <h2>or how you learned to stop worrying and used your mail signature to communicate !</h2>
+          <h1>{{i18n "header.simplesignature"}}</h1>
+          <h2>{{i18n "landing.accroche"}}</h2>
+          <br />
+          <br />
+          <p><button class="btn btn-default btn-lg" id="signup">{{i18n "landing.signup"}}</button></p>
         </div>
       </div>
 
     </div><!-- /header-image -->
     <div class="scrollblock pull-left"></div>
-    <div class="container">
+    <div class="container" data-spy="scroll" data-target="#landingNav">
 
       <!-- START THE FEATURETTES -->
 
@@ -24,8 +27,8 @@
           <div id="mail4"><img src="/assets/img/mail.svg" height="80px" width="80px"></div>
           <div id="mail5"><img src="/assets/img/mail.svg" height="45px" width="45px"></div>
         </div>
-        <h2 class="featurette-heading">Campaigns ! <span class="text-muted">Campaigns everywhere !</span></h2>
-        <p class="lead">Create campaigns of communication using mail signature. They will automatically be pushed to the mail application of your co-workers (and yours). No more worries about how everyone in your company use their signature.</p>
+        <h2 class="featurette-heading">{{i18n "landing.campaignstitle"}} <span class="text-muted">{{i18n "landing.campaignssubtitle"}}</span></h2>
+        <p class="lead">{{i18n "landing.campaignstext"}}</p>
       </div>
       
       <hr class="featurette-divider">
@@ -33,25 +36,30 @@
         <div class="scrollblock place pull-left" id="target">
           <div id="arrow"><img src="/assets/img/arrow.svg" height="100px" width="100px"></div>
         </div>
-        <h2 class="featurette-heading">Aim <span class="text-muted">at the right target.</span></h2>
-        <p class="lead">Because your co-workers don't really care about your communication (or not ?), Simple Signature checks if the email is for a co-worker or a client and automatically choose the right signature in function.</p>
+        <h2 class="featurette-heading">{{i18n "landing.targettitle"}} <span class="text-muted">{{i18n "landing.targetsubtitle"}}</span></h2>
+        <p class="lead">{{i18n "landing.targettext"}}</p>
       </div>
 
       <hr class="featurette-divider">
 
       <div class="featurette" id="free">
         <div class="scrollblock place pull-right" id="gift"></div>
-        <h2 class="featurette-heading">Last but not least, <span class="text-muted">it's free !</span></h2>
-        <p class="lead">You can use Simple Signature for an unlimited time and if you like it, you can buy me a beer or you can unlock awesome features for a very small price.</p>
+        <h2 class="featurette-heading">{{i18n "landing.freetitle"}} <span class="text-muted">{{i18n "landing.freesubtitle"}}</span></h2>
+        <p class="lead">{{i18n "landing.freetext"}}</p>
       </div>
 
       <!-- /END THE FEATURETTES -->
+      <hr class="featurette-divider">
 
+      <div class="featurette">
+        <button class="btn btn-primary btn-lg" id="signup">{{i18n "landing.signup"}}</button>
+      </div>
+      
       <hr>
 
       <!-- FOOTER -->
       <footer>
-        <p>Made with <3 by <a href="http://www.linkedin.com/pub/mathieu-dutour/" target="_blank" class="no-backbone">Mathieu</a></p>
+        <p>Made with <3 by <a href="http://www.linkedin.com/in/mathieudutour" target="_blank" class="no-backbone">Mathieu</a></p>
       </footer>
       <!-- /END OF FOOTER -->
 

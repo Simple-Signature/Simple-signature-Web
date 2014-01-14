@@ -9,7 +9,46 @@
 
     # Called on creation
   initialize: () ->
-            
+    Session.set('sidebar', 'signatures')
+      
+    i18n.i18nMessages.signatures =
+      create: 
+        en: "Create a new signature"
+        fr: "Créer une nouvelle signature"
+      name: 
+        en: "Name"
+        fr: "Nom"
+      date: 
+        en: "Creation date"
+        fr: "Date de création"
+      edit: 
+        en: "Edit this signature"
+        fr: "Modifier cette signature"
+      remove: 
+        en: "Remove this signature"
+        fr: "Supprimer cette signature"
+      newtitle:
+        en: "New Signature"
+        fr: "Nouvelle Signature"
+      edittitle:
+        en: "Edition of the signature"
+        fr: "Modification de la signature"
+      content:
+        en: "Content"
+        fr: "Contenu"
+      createbutton:
+        en: "Create"
+        fr: "Créer"
+      editbutton:
+        en: "Edit"
+        fr: "Modifier"
+      alreadySameSign:
+        en: "Error &amp; A signature with that name already exists." 
+        fr: "Erreur &amp; Une signature avec ce nom existe déjà."
+      empty:
+        en: "Error &amp; The name must not be empty." 
+        fr: "Erreur &amp; Le nom ne doit pas être vide."    
+                
     Template.signatures.helpers 
       signatures: -> 
         @imagesList = []
@@ -90,7 +129,7 @@ Template.newSignature.events
     name = t.find('#new-signature-name').value
     content = t.find('#new-signature-content').value  
     firm = Meteor.user().profile.firm
-    if isNotAlreadyASameSignature(name, firm) and name isnt ""
+    if isNotEmpty(name) and isNotAlreadyASameSignature(name, firm)
       sign = Signatures.insert
         name: name
         value: content.replace('/cfs/files/images/','PATHAPPDATA')
@@ -114,7 +153,7 @@ Template.editSignature.events
     content = t.find('#edit-signature-content').value  
     id = t.find('#edit-signature-id').value  
     firm = Meteor.user().profile.firm
-    if isNotAlreadyASameSignature(name, firm, id) and name isnt ""
+    if isNotEmpty(name) and isNotAlreadyASameSignature(name, firm, id)
       Signatures.update(id,{$set: {name: name,value: content.replace('/cfs/files/images/','PATHAPPDATA')}})
       $('#previewSignature').html(content)
       html2canvas($('#previewSignature'),
@@ -130,5 +169,12 @@ isNotAlreadyASameSignature = (signature, firm, idSign) ->
   if Signatures.find({name:signature, firm: firm}).count() is 0 or Signatures.findOne({name:signature, firm: firm})._id is idSign
     return true
   else
-    Session.set('displayMessage', 'Error &amp; A signature with that name already exists.')
-    return false; 
+    Session.set('displayMessage', i18n._.translate("signatures.alreadySameSign"))
+    return false
+    
+isNotEmpty = (name) ->
+  if name and name isnt ""
+    return true
+  else
+    Session.set('displayMessage', i18n._.translate("signatures.empty"))
+    return false

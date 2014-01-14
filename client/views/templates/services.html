@@ -1,0 +1,113 @@
+<template name="services">
+  {{> sidebar}}
+
+    <div id="page-wrapper">
+      <div class="row">
+          <div class="col-lg-12">
+            <ol class="breadcrumb">
+              <li class="active"><i class="icon-user"></i> {{i18n "sidebar.services"}}</li>
+            </ol>
+          </div>
+        </div><!-- /.row -->
+      {{#if admin}}
+      <div class="container">{{#if paid}}<button class="md-trigger btn btn-primary" data-modal="newServiceModal"><i class="icon-plus"></i> {{i18n "services.create"}}</button>{{else}}<a class="btn btn-primary" href="/subscription"><i class="icon-plus"></i> {{i18n "services.create"}}</a>{{/if}}</div>
+      <br />
+      <div class="well col-xs-8 col-sm-8 col-md-8 col-lg-8 col-xs-offset-2 col-sm-offset-2 col-md-offset-2 col-lg-offset-2">
+      {{#each services}}
+        <div class="row user-row">
+            <div class="col-xs-8 col-sm-9 col-md-10 col-lg-10">
+                <strong>{{name}}</strong><br>
+            </div>
+            <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 dropdown-user" data-for="#{{_id}}">
+                <i class="icon-arrow-down text-muted"></i>
+            </div>
+        </div>
+        <div class="row user-infos" id="{{_id}}">
+            <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10 col-xs-offset-0 col-sm-offset-0 col-md-offset-1 col-lg-offset-1">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">{{i18n "services.info"}}</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12 hidden-md hidden-lg">
+                                <strong>{{name}}</strong><br>
+                                <dl>
+                                    <dt>{{i18n "users.registered"}}</dt>
+                                    <dd>{{prettifyDate createdAt}}</dd>
+                                </dl>
+                            </div>
+                            <div class=" col-md-12 col-lg-12 hidden-xs hidden-sm">
+                                <strong>{{name}}</strong><br>
+                                <table class="table table-user-information">
+                                    <tbody>
+                                    <tr>
+                                        <td>{{i18n "users.registered"}}</td>
+                                        <td>{{prettifyDate createdAt}}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-footer">
+                        <span class="pull-right">
+                            <button class="btn btn-sm btn-warning editServiceButton md-trigger" idService="{{_id}}" type="button" data-toggle="tooltip" data-original-title="{{i18n "services.edit"}}" data-modal="editServiceModal"><i class="icon-pencil"></i></button>
+                            <button class="btn btn-sm btn-danger removeServiceButton" idService="{{_id}}" type="button" data-toggle="tooltip" data-original-title="{{i18n "services.remove"}}"><i class="icon-close" ></i></button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{/each}}
+      </div>
+      {{else}}
+      You have nothing to do here.
+      {{/if}}
+    </div>  
+      <div class="md-modal md-effect-12" id="newServiceModal">
+  			 <div class="md-content">
+  			   <button type="button" class="close md-close"aria-hidden="true">&times;</button>
+  			   <h3>{{i18n "services.newtitle"}}</h3>
+  			   <div>
+  					 {{> newService}}
+  				</div>
+  			</div>
+  		</div>
+  		<div class="md-modal md-effect-12" id="editServiceModal">
+  			 <div class="md-content">
+  			   <button type="button" class="close md-close"aria-hidden="true">&times;</button>
+  			   <h3>{{i18n "services.edittitle"}}</h3>
+  			   <div>
+  					 {{> editService}}
+  				</div>
+  			</div>
+  		</div>
+  		<div class="md-overlay"></div>
+    </div><!-- /#page-wrapper -->
+</template>
+
+<template name="newService">
+  <form id="new-user-form" class="form">
+      <div class="form-group">
+        <label class="sr-only" for="new-user-email">{{i18n "services.name"}}</label>
+        <input type="email" class="form-control" id="new-service-name" placeholder="{{i18n "services.name"}}" required/>
+      </div>
+      <div class="form-group">
+        <button type="submit" id="create-new-service" class="btn btn-default">{{i18n "services.createbutton"}}</button>
+      </div>
+  </form>
+</template>
+
+<template name="editService">
+  <form id="edit-user-form" class="form">
+    <input type="hidden" id="edit-service-id"/>
+      <div class="form-group">
+        <label class="sr-only" for="edit-service-name">{{i18n "services.name"}}</label>
+        <input type="email" class="form-control" id="edit-user-email" placeholder="{{i18n "services.name"}}" required/>
+      </div>
+      <div class="form-group">
+        <button type="submit" id="edit-service" class="btn btn-default">{{i18n "services.editbutton"}}</button>
+      </div>
+  </form>
+</template>

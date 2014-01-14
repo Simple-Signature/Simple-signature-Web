@@ -1,32 +1,19 @@
 <template name="signatures">
-<div>
-      <ul class="nav nav-pills nav-stacked side-nav">
-            <li><a href="/dashboard"><i class="glyphicon glyphicon-stats"></i> Dashboard</a></li>
-            <li class="active"><a href="/signatures"><i class="glyphicon glyphicon-bullhorn"></i> Signatures</a></li>
-            <li><a href="/images"><i class="glyphicon glyphicon-picture"></i> Images</a></li>
-            <li><a href="/campaigns"><i class="glyphicon glyphicon-calendar"></i> Campaigns</a></li>
-            {{#if admin}}
-            <li><a href="/users"><i class="glyphicon glyphicon-user"></i> Users</a></li>
-            <li><a href="/services"><i class="glyphicon glyphicon-user"></i> Services</a></li>
-            {{/if}}
-      </ul>
-
-    </div>
-
+  {{> sidebar}}
     <div id="page-wrapper">
       <div class="row">
           <div class="col-lg-12">
             <ol class="breadcrumb">
-              <li class="active"><i class="glyphicon glyphicon-bullhorn"></i> Signatures</li>
+              <li class="active"><i class="icon-bullhorn"></i> {{i18n "sidebar.signatures"}}</li>
             </ol>
           </div>
         </div><!-- /.row -->
-      <div class="container"><button class="md-trigger btn btn-primary" data-modal="newSignatureModal">Créer une nouvelle signature</button></div>
+      <div class="container"><button class="md-trigger btn btn-primary" data-modal="newSignatureModal"><i class="icon-plus"></i> {{i18n "signatures.create"}}</button></div>
       <br />
         <table class="table table-striped"> 
           <tr>
-            <th>Nom</th>
-            <th>Date de création</th>
+            <th>{{i18n "signatures.name"}}</th>
+            <th>{{i18n "signatures.date"}}</th>
             <th></th>
             <th></th>
             <th></th>
@@ -36,17 +23,15 @@
             <td>{{name}}</td>
             <td>{{prettifyDate createdAt}}</td>
             <td><img src="{{{img}}}"/></td>
-            <td><button class="btn btn-sm btn-warning editSignButton md-trigger" type="button" data-toggle="tooltip" data-original-title="Edit this signature" data-modal="editSignatureModal" idSign="{{_id}}"><i class="glyphicon glyphicon-pencil"></i></button></td>
-            <td><button class="btn btn-sm btn-danger removeSignButton" type="button" data-toggle="tooltip" data-original-title="Remove this signature" idSign="{{_id}}"><i class="glyphicon glyphicon-remove"></i></button></td>
+            <td><button class="btn btn-sm btn-warning editSignButton md-trigger" type="button" data-toggle="tooltip" data-original-title="{{i18n "signatures.edit"}}" data-modal="editSignatureModal" idSign="{{_id}}"><i class="icon-pencil"></i></button></td>
+            <td><button class="btn btn-sm btn-danger removeSignButton" type="button" data-toggle="tooltip" data-original-title="{{i18n "signatures.remove"}}" idSign="{{_id}}"><i class="icon-close"></i></button></td>
           </tr>       
-          {{else}}
-          <p class="empty">No content</p>
           {{/each}}
         </table>    
       <div class="md-modal md-effect-12" id="newSignatureModal">
   			 <div class="md-content">
   			   <button type="button" class="close md-close"aria-hidden="true">&times;</button>
-  			   <h3>Nouvelle Signature</h3>
+  			   <h3>{{i18n "signatures.newtitle"}}</h3>
   			   <div>
   					 {{> newSignature}}
   				</div>
@@ -55,7 +40,7 @@
   		<div class="md-modal md-effect-12" id="editSignatureModal">
   			 <div class="md-content">
   			   <button type="button" class="close md-close"aria-hidden="true">&times;</button>
-  			   <h3>Édition de la Signature</h3>
+  			   <h3>{{i18n "signatures.edittitle"}}</h3>
   			   <div>
   					 {{> editSignature}}
   				</div>
@@ -68,15 +53,15 @@
 <template name="newSignature">
   <form id="new-signature-form" class="form">
       <div class="form-group">
-        <label class="sr-only" for="new-signature-name">Nom</label>
-        <input type="text" class="form-control" id="new-signature-name" placeholder="Nom" required/>
+        <label class="sr-only" for="new-signature-name">{{i18n "signatures.name"}}</label>
+        <input type="text" class="form-control" id="new-signature-name" placeholder="{{i18n "signatures.name"}}" required/>
       </div>
       <div class="form-group">
-        <label class="sr-only" for="new-signature-content">Content</label>
-        <textarea type="text" class="form-control" id="new-signature-content" placeholder="Content" rows="15" required></textarea>
+        <label class="sr-only" for="new-signature-content">{{i18n "signatures.content"}}</label>
+        <textarea type="text" class="form-control" id="new-signature-content" placeholder="{{i18n "signatures.content"}}" rows="15" required></textarea>
       </div>
       <div class="form-group">
-        <button type="submit" id="create-new-signature" class="btn btn-default">Create</button>
+        <button type="submit" id="create-new-signature" class="btn btn-default">{{i18n "signatures.createbutton"}}</button>
       </div>
   </form>
 </template>
@@ -85,15 +70,15 @@
   <form id="edit-signature-form" class="form">
     <input type="hidden" id="edit-signature-id"/>
       <div class="form-group">
-        <label class="sr-only" for="edit-signature-name">Nom</label>
-        <input type="text" class="form-control" id="edit-signature-name" placeholder="Nom" required/>
+        <label class="sr-only" for="edit-signature-name">{{i18n "signatures.name"}}</label>
+        <input type="text" class="form-control" id="edit-signature-name" placeholder="{{i18n "signatures.name"}}" required/>
       </div>
       <div class="form-group">
-        <label class="sr-only" for="edit-signature-content">Content</label>
-        <textarea type="text" class="form-control" id="edit-signature-content" placeholder="Content" rows="15" required></textarea>
+        <label class="sr-only" for="edit-signature-content">{{i18n "signatures.content"}}</label>
+        <textarea type="text" class="form-control" id="edit-signature-content" placeholder="{{i18n "signatures.content"}}" rows="15" required></textarea>
       </div>
       <div class="form-group">
-        <button type="submit" id="create-new-signature" class="btn btn-default">Edit</button>
+        <button type="submit" id="create-new-signature" class="btn btn-default">{{i18n "signatures.editbutton"}}</button>
       </div>
   </form>
 </template>

@@ -1,0 +1,20 @@
+<template name="sidebar">
+	<div>
+      <ul class="nav nav-pills nav-stacked side-nav">
+            <li{{#if dashboard}} class="active"{{/if}}><a href="/dashboard"><i class="icon-bars"></i> {{i18n "sidebar.dashboard"}}<i class="icon-arrow-right"></i></a></li>
+            <li{{#if signatures}} class="active"{{/if}}><a href="/signatures"><i class="icon-bullhorn"></i> {{i18n "sidebar.signatures"}}<i class="icon-arrow-right"></i></a></li>
+            <li{{#if images}} class="active"{{/if}}><a href="/images"><i class="icon-images"></i> {{i18n "sidebar.images"}}<i class="icon-arrow-right"></i></a></li>
+            <li{{#if campaigns}} class="active"{{/if}}><a href="/campaigns"><i class="icon-calendar"></i> {{i18n "sidebar.campaigns"}}<i class="icon-arrow-right"></i></a></li>
+            {{#if admin}}
+            <li{{#if users}} class="active"{{/if}}><a href="/users"><i class="icon-users"></i> {{i18n "sidebar.users"}}<i class="icon-arrow-right"></i></a></li>
+            <li{{#if services}} class="active"{{/if}}><a href="/services"><i class="icon-user"></i> {{i18n "sidebar.services"}}<i class="icon-arrow-right"></i></a></li>
+            {{/if}}
+      </ul>
+      {{#constant}}
+      <ul class="nav nav-pills nav-stacked side-nav-bottom">
+            <li><a href="/download"><i class="icon-download"></i> {{i18n "sidebar.download"}}<i class="icon-arrow-right"></i></a></li>
+            <li><a href="mailto:mathieu@dutour.me?subject=[{{config 'app_name'}}]" class="no-backbone"><i class="icon-support"></i> {{i18n "sidebar.support"}}<i class="icon-arrow-right"></i></a></li>
+      </ul>
+      {{/constant}}
+  </div>
+</template>

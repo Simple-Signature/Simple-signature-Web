@@ -1,0 +1,22 @@
+<template name="subscriptionReturn">
+  {{#if ok}}
+    <div class="container">
+      <h3>{{i18n "subscriptionreturn.ok1"}}</h3>
+      <p>{{i18n "subscriptionreturn.goback"}} <a href="/dashboard">{{i18n "subscriptionreturn.dashboard"}}</a> {{i18n "subscriptionreturn.ok2"}}</p>
+    </div>
+  {{else}}
+    {{#if pending}}
+      <div class="container">
+        <h3>{{i18n "subscriptionreturn.pending1"}}</h3>
+        <p>{{i18n "subscriptionreturn.pending2"}}</p>
+        <P>{{i18n "subscriptionreturn.goback"}} <a href="/dashboard">{{i18n "subscriptionreturn.dashboard"}}</a>{{i18n "subscriptionreturn.pending3"}}</p>
+      </div>
+    {{else}}
+      <div class="container">
+        <h3>{{i18n "subscriptionreturn.notok1"}}</h3>
+        <p>{{i18n "subscriptionreturn.notok2"}} <a class="no-backbone" href="mailto:mathieu@dutour.me?subject=[{{config "app_name"}}] Payment Error">{{i18n "subscriptionreturn.notok3"}}</a> {{i18n "subscriptionreturn.notok4"}}</p>
+        <P>{{i18n "subscriptionreturn.goback"}} <a href="/dashboard">{{i18n "subscriptionreturn.dashboard"}}</a>.</p>
+      </div>
+    {{/if}}
+  {{/if}}
+</template>

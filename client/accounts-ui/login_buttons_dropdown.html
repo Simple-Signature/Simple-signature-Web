@@ -5,7 +5,7 @@
   <ul class="nav navbar-nav navbar-right">
     <li class="dropdown">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{displayName}} <b class="caret"></b></a>    
-        <div class="dropdown-menu" style="padding: 15px;min-width: 250px;">
+        <div class="dropdown-menu" style="padding: 15px;min-width: 300px;">
           {{#if inMessageOnlyFlow}}
             {{> _loginButtonsMessages}}
           {{else}}
@@ -22,9 +22,9 @@
 
 <template name="_loginButtonsLoggedInDropdownActions">
   {{#if allowChangingPassword}}
-    <button class="btn btn-default btn-block" id="login-buttons-open-change-password">Change password</button>
+    <button class="btn btn-default btn-block" id="login-buttons-open-change-password">{{i18n "login.changepassword"}}</button>
   {{/if}}
-  <button class="btn btn-block btn-primary" id="login-buttons-logout">Sign out</button>
+  <button class="btn btn-block btn-primary" id="login-buttons-logout">{{i18n "login.signout"}}</button>
 </template>
 
 <!--            -->
@@ -33,8 +33,8 @@
 <template name="_loginButtonsLoggedOutDropdown">
   <ul class="nav navbar-nav navbar-right">
     <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Sign In{{#unless forbidClientAccountCreation}} / Up{{/unless}} <b class="caret"></b></a>
-        <ul class="dropdown-menu" style="padding: 15px;min-width: 250px;">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{i18n "login.signinup"}}<b class="caret"></b></a>
+        <ul class="dropdown-menu" style="padding: 15px;min-width: 300px;">
           <li>
             {{> _loginButtonsLoggedOutAllServices}}
           </li>
@@ -59,9 +59,9 @@
       <div class="form-group">
         <button class="btn btn-primary col-sm-12" id="login-buttons-password" type="submit">
           {{#if inSignupFlow}}
-            Create
+            {{i18n "login.create"}}
           {{else}}
-            Sign in
+            {{i18n "login.signin"}}
           {{/if}}
         </button>
       </div>
@@ -69,10 +69,10 @@
     {{#if inLoginFlow}}
       <div id="login-other-options">
       {{#if showForgotPasswordLink}}
-        <a id="forgot-password-link" class="pull-left" >Forgot password?</a>
+        <a id="forgot-password-link" class="pull-left" >{{i18n "login.forgot"}}</a>
       {{/if}}
       {{#if showCreateAccountLink}}
-        <a id="signup-link" class="pull-right" >Create account</a>
+        <a id="signup-link" class="pull-right" >{{i18n "login.signup"}}</a>
       {{/if}}
       </div>
     {{/if}}
@@ -86,24 +86,24 @@
   <form id="forgot-form" class="form">
     {{> _loginButtonsMessages}}
     <div id="forgot-password-email-label-and-input" class="form-group"> {{! XXX we should probably use loginButtonsFormField }}
-      <input id="forgot-password-email" type="email" placeholder="E-mail" class="form-control" />
+      <input id="forgot-password-email" type="email" placeholder="{{i18n "login.mail"}}" class="form-control" />
     </div>
     <div class="form-group">
-      <button class="btn btn-primary login-button-form-submit col-sm-12" id="login-buttons-forgot-password" type="submit">Reset password</button>
+      <button class="btn btn-primary login-button-form-submit col-sm-12" id="login-buttons-forgot-password" type="submit">{{i18n "login.resetpassword"}}</button>
     </div>
     {{> _loginButtonsBackToLoginLink}}
   </div>
 </template>
 
 <template name="_loginButtonsBackToLoginLink">
-    <button id="back-to-login-link" class="btn btn-default col-sm-12">Cancel</button>
+    <button id="back-to-login-link" class="btn btn-default col-sm-12">{{i18n "login.cancel"}}</button>
 </template>
 
 <template name="_loginButtonsFormField">
   {{#if visible}}
     <div class="form-group">
-      <label class="sr-only" for="login-{{fieldName}}">{{fieldLabel}}</label>
-      <input id="login-{{fieldName}}" type="{{inputType}}" placeholder="{{fieldLabel}}" class="form-control" />
+      <label class="sr-only" for="login-{{fieldName}}">{{i18n fieldLabel}}</label>
+      <input id="login-{{fieldName}}" type="{{inputType}}" placeholder="{{i18n fieldLabel}}" class="form-control" />
     </div>
   {{/if}}
 </template>
@@ -113,6 +113,6 @@
   {{#each fields}}
     {{> _loginButtonsFormField}}
   {{/each}}
-  <button class="btn btn-primary" id="login-buttons-do-change-password">Change password</button>
-  <button class="btn btn-default login-close">Close</button>
+  <button class="btn btn-primary" id="login-buttons-do-change-password">{{i18n "login.changepassword"}}</button>
+  <button class="btn btn-default login-close">{{i18n "login.close"}}</button>
 </template>

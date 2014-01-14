@@ -6,10 +6,11 @@
 @App = {}
 
 Meteor.startup () ->
-        # Create the backbone router
+  Session.set('processLogin', 0)
   Meteor.subscribe('firms')
   App.router = new Router()
   Backbone.history.start({pushState: true})
+  Backbone.history.on("route", sendpageview)
 
 Meteor.autorun () ->
   message = Session.get('displayMessage')
@@ -17,7 +18,10 @@ Meteor.autorun () ->
     console.log(message)
     stringArray = message.split('&amp;')
     ui.notify(stringArray[0], stringArray[1]).effect('slide').closable()
-    Session.set('displayMessage', null)
     
 Handlebars.registerHelper "prettifyDate", (date) ->
   return date.toLocaleDateString() 
+  
+sendpageview = () ->
+  url = Backbone.history.getFragment()
+  ga('send', 'pageview', "/#{url}");

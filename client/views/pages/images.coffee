@@ -8,7 +8,34 @@
 
     # Called on creation
   initialize: () ->
-            
+    Session.set('sidebar', 'images')
+
+    i18n.i18nMessages.images =
+      ajout: 
+        en: "Add a new image"
+        fr: "Ajouter une nouvelle image"
+      uploading: 
+        en: "Uploading ..."
+        fr: "Téléchargement ..."
+      new: 
+        en: "New Image"
+        fr: "Nouvelle Image"
+      title: 
+        en: "Image's title"
+        fr: "Titre de l'image"
+      imageupload: 
+        en: "Image to upload"
+        fr: "Image à charger"
+      upload: 
+        en: "Upload"
+        fr: "Charger"
+      alreadySameImage:
+        en: "Error &amp; An image with that name already exists." 
+        fr: "Erreur &amp; Une image avec ce nom existe déjà."
+      empty:
+        en: "Error &amp; The name must not be empty." 
+        fr: "Erreur &amp; Le nom ne doit pas être vide." 
+        
     Template.images.helpers 
       images: -> return FirmsImages.find()
       admin: -> 
@@ -47,12 +74,11 @@ Template.uploadImage.events
     file = t.find('#new-image-image').files[0]
     title = t.find('#new-image-title').value   
     firm = Meteor.user().profile.firm
-    if isNotAlreadyASameImage(title, firm) and title isnt ""
+    if isNotEmpty(title) and isNotAlreadyASameImage(title, firm)
       store = new FS.File(file)
       store.metadata = 
         title:title
         firm:firm
-      console.log(store)
       FirmsImages.insert(store)       
       $(".md-modal").removeClass("md-show")
   
@@ -60,5 +86,21 @@ isNotAlreadyASameImage = (title, firm) ->
   if FirmsImages.find({'metadata.title':title, 'metadata.firm': firm}).count() is 0
     return true
   else
-    Session.set('displayMessage', 'Error &amp; An image with that name already exists.')
+    Session.set('displayMessage', i18n._.translate("images.alreadySameImage"))
     return false; 
+
+isNotEmpty = (name) ->
+  if name and name isnt ""
+    return true
+  else
+    Session.set('displayMessage', i18n._.translate("images.empty"))
+    return false
+
+Template.displayImage.events
+  'click .removeImage': (e) ->
+    id = $(e.target).attr("idImage")
+    if !id?
+      id = $(e.target).parent().attr("idImage")
+    FirmsImages.remove(id, (err) ->
+      console.log err
+    )

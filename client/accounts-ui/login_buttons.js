@@ -330,15 +330,15 @@
 
   Template._loginButtonsLoggedOutPasswordService.fields = function () {
     var loginFields = [
-      {fieldName: 'email', fieldLabel: 'Email', inputType: 'email', visible: true},
-      {fieldName: 'password', fieldLabel: 'Password', inputType: 'password', visible: true}
+      {fieldName: 'email', fieldLabel: 'login.mail', inputType: 'email', visible: true},
+      {fieldName: 'password', fieldLabel: 'login.password', inputType: 'password', visible: true}
     ];
 
     var signupFields = [
       
-      {fieldName: 'email', fieldLabel: 'Email', inputType: 'email', visible: true},
-      {fieldName: 'firm', fieldLabel: 'Firm', inputType: 'text', visible: true},
-      {fieldName: 'password', fieldLabel: 'Password', inputType: 'password', visible: true}
+      {fieldName: 'email', fieldLabel: 'login.mail', inputType: 'email', visible: true},
+      {fieldName: 'firm', fieldLabel: 'login.firm', inputType: 'text', visible: true},
+      {fieldName: 'password', fieldLabel: 'login.password', inputType: 'password', visible: true}
       
     ];
 
@@ -446,6 +446,8 @@
         loginButtonsSession.errorMessage(error.reason || "Unknown error");
         $('#loading').hide();
       } else {
+        if(Meteor.user() &&  Meteor.user().profile.lang)
+          i18n.setLocale(Meteor.user().profile.lang);
         loginButtonsSession.closeDropdown();
         App.router.renderHeader();
         App.router.navigate("/dashboard", {trigger: true})
@@ -486,6 +488,7 @@
       options.profile.firm = firmId;
       options.profile.paid=false;
       options.profile.admin=true;
+      option.profile.lang = i18n.getLocale();
       $('#loading').show();
       Accounts.createUser(options, function (error) {
         if (error) {
@@ -563,20 +566,6 @@
         }, 3000);
       }
     });
-  };
-
-  var matchPasswordAgainIfPresent = function () {
-    // notably not trimmed. a password could (?) start or end with a space
-    var passwordAgain = elementValueById('login-password-again');
-    if (passwordAgain !== null) {
-      // notably not trimmed. a password could (?) start or end with a space
-      var password = elementValueById('login-password');
-      if (password !== passwordAgain) {
-        loginButtonsSession.errorMessage("Passwords don't match");
-        return false;
-      }
-    }
-    return true;
   };
   
   //

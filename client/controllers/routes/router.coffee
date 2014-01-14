@@ -11,7 +11,9 @@
     "dashboard": "dashboard"
     "users": "users"
     "images": "images"
-    "signup": "signup"
+    "subscription": "signup"
+    "download": "download"
+    "subscription/return/:reason": "subscription"
     "": "home"
     "*invalidRoute": "notFound" # For any other path, go 404
     
@@ -26,21 +28,11 @@
   page_header_sel: "#header"
 
     # Google Analytics instance variable
-  #_gaq: null
+  _gaq: null
 
     # Constructor
   initialize: () ->
-        # Create a component view that renders in the page template, on every page
     @renderHeader()
-
-        # Setup Google Analytics (change UA-XXXXX-X to your own Google Analytics number!)
-    ###`this._gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
-    (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
-    g.src='//www.google-analytics.com/ga.js';
-    s.parentNode.insertBefore(g,s)}(document,'script'));`
-
-        # Bind a Google Analytics track event to every page change
-    @bind 'all', @_trackPageview###
 
     # Methods for each route
   home: () ->
@@ -65,29 +57,40 @@
     @.go ViewImages, true, false
     
   users: () ->
-    @.go ViewUsers, true, false
+    @.go ViewUsers, true, true
 
   notFound: () ->
     @.go ViewNotFound, false
 
   signup: () ->
-    @.go ViewSignup, false
+    @.go ViewSignup, true, false
+  
+  download: () ->
+    @.go ViewDownload, false
+    
+  subscription: (reason) ->
+    @.go ViewSubscription, false, false, reason
 
     # Actually changes the page by creating the view and inserting it
   go: (viewClass, internal, paid, params) ->
     if !viewClass?
-      viewClass = ViewNotFound 
-        # Pages that are "internal" can only be viewed by a logged in user
-    
-        # If all is well, go to the requested page!
-    if !internal or (Meteor.userId()? and Meteor.user()?)
-      if !paid or Meteor.user().profile.paid
-        @view = new viewClass(params)
-        @render()
-      else
-        @navigate("/signup", {trigger: true})
-    else
       @navigate("/404", {trigger: true})
+    
+    if !internal # si c'est une page public
+      @view = new viewClass(params)
+      @render()
+    else # si c'est une page privée
+      if (Meteor.userId()? and Meteor.user()?) # on doit être connecté
+        if !Meteor.user().profile.paid and !Meteor.user().profile.admin # si ce n'est pas un admin et qu'il ne paie pas
+          @navigate("/subscription", {trigger: true})
+        else 
+          if !paid or Meteor.user().profile.admin # Si c'est une page non payante ou si l'on est admin
+            @view = new viewClass(params)
+            @render()
+          else # si c'est une page payante et que l'on ne paie pas
+            @navigate("/subscription", {trigger: true})
+      else # si on est pas connecté et que c'est une page public
+        @navigate("/404", {trigger: true})
 
     # Render the current view
   render: () ->
@@ -127,8 +130,3 @@
       return elt.href
     else
       return @getHref(elt.parentElement)
-    
-    # Let Google Analytics know that the page has changed
-  _trackPageview: ->
-    url = Backbone.history.getFragment()
-    @_gaq.push(['_trackPageview', "/#{url}"])

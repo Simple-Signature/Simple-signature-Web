@@ -8,6 +8,25 @@ colorArray = ["52, 152, 219","46, 204, 113", "231, 76, 60","26, 188, 156","241, 
   template: null
 
   initialize: () ->
+    Session.set('sidebar', 'dashboard')
+      
+    i18n.i18nMessages.dashboard =
+      signatures: 
+        en: "View Signatures"
+        fr: "Voir les Signatures"
+      campaigns: 
+        en: "Current Campaigns"
+        fr: "Campagnes en cours"
+      voircampaigns: 
+        en: "View Campaigns"
+        fr: "Voir les Campagnes"
+      users: 
+        en: "Manage users"
+        fr: "Gérer les utilisateurs"
+      mails: 
+        en: "Number of Mails sent"
+        fr: "Nombre de Mails envoyés"
+        
     Template.dashboard.events
       # Prevent the page reloading for links
       "click a": (e) ->

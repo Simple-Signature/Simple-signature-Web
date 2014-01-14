@@ -9,7 +9,53 @@
 
     # Called on creation
   initialize: () ->
-            
+    Session.set('sidebar', 'users')
+      
+    i18n.i18nMessages.users =
+      create: 
+        en: "Create a new user"
+        fr: "Créer une nouvel utilisateur"
+      level: 
+        en: "User Level :"
+        fr: "Niveau d'accès :"
+      info: 
+        en: "User information"
+        fr: "Information sur l'utilisateur"
+      registered: 
+        en: "Registered since :"
+        fr: "Enregistré depuis :"
+      send: 
+        en: "Send message to user"
+        fr: "Envoyer un message"
+      edit: 
+        en: "Edit this user"
+        fr: "Modifier cet utilisateur"
+      remove: 
+        en: "Remove this user"
+        fr: "Supprimer cet utilisateur"
+      newtitle:
+        en: "New User"
+        fr: "Nouvel Utilisateur"
+      edittitle:
+        en: "Edition of the user"
+        fr: "Modification de l'utilisateur"
+      email: "Email"
+      password:
+        en: "Password"
+        fr: "Mot de passe"
+      createbutton:
+        en: "Create"
+        fr: "Créer"
+      editbutton:
+        en: "Edit"
+        fr: "Modifier"
+      admin:
+        en: "Administrator"
+        fr: "Administrateur"
+      modo:
+        en: "Moderator"
+        fr: "Modérateur"
+                
     Template.users.helpers 
       users: -> return Meteor.users.find({'profile.firm': Meteor.user().profile.firm})
       admin: -> 
@@ -49,9 +95,9 @@
         idFor = $(dataFor)      
         idFor.slideToggle(400, () ->
           if idFor.is(':visible')
-            currentButton.html('<i class="glyphicon glyphicon-chevron-up text-muted"></i>')
+            currentButton.html('<i class="icon-arrow-up text-muted"></i>')
           else
-            currentButton.html('<i class="glyphicon glyphicon-chevron-down text-muted"></i>')
+            currentButton.html('<i class="icon-arrow-down text-muted"></i>')
         )
 
       
@@ -76,7 +122,8 @@ Template.newUser.events
     e.preventDefault()
     email = t.find('#new-user-email').value
     password = t.find('#new-user-password').value 
-    if email isnt ""          
+    if email isnt ""
+      Meteor.call("createUserServerSide", email)       
       $(".md-modal").removeClass("md-show")
 
 Template.editUser.events
@@ -87,3 +134,15 @@ Template.editUser.events
     password = t.find('#edit-user-password').value 
     if email isnt ""          
       $(".md-modal").removeClass("md-show")
+      
+validateEmail = (email) ->
+  re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+  if re.test(email)
+    if Meteor.users.find({emails:[{address:email}]}).count() isnt 0
+      Session.set('displayMessage', 'Error &amp; This email is already in the database.')
+      return false
+    else
+      return true
+  else 
+    Session.set('displayMessage', 'Error &amp; Invalid email')
+    return false

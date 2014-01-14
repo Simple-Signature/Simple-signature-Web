@@ -12,15 +12,23 @@
       firmId = Meteor.users.findOne(userId).profile.firm
       return  doc.firm == firmId and isNotAlreadyASameCampaign(doc.title, firmId)
     else return false
-  update: (userId, doc) ->
-    if userId? and doc.title? and doc.firm? and doc.start? and doc.end? and doc.signature? and doc.title isnt "Default Intern" and doc.title isnt "Default Extern"
+  update: (userId, doc, fields, modifiers) ->
+    if userId? and doc.title? and doc.firm? and (fields.indexOf('start') is -1 or modifiers['$set'].start?) and (fields.indexOf('end') is -1 or modifiers['$set'].end?) and doc.signature? and doc.title isnt "Default Intern" and doc.title isnt "Default Extern"
       user = Meteor.users.findOne(userId)
-      return (user.profile.paid or isNotAlreadyThreeCampaigns(doc.firm, doc.start, doc.end, doc._id)) and doc.firm == user.profile.firm
+      if fields.indexOf('start') isnt -1
+        start = modifiers['$set'].start
+      else
+        start = doc.start
+      if fields.indexOf('end') isnt -1
+        end = modifiers['$set'].end
+      else
+        end = doc.end
+      return (user.profile.paid or isNotAlreadyThreeCampaigns(doc.firm, start, end, doc._id)) and doc.firm == user.profile.firm
     else return false
   remove: (userId, doc) ->
-    if userId? and doc.title? and doc.firm? and doc.start? and doc.end? and doc.title isnt "Default Intern" and doc.title isnt "Default Extern"
+    if userId? and doc.title? and doc.firm? and doc.title isnt "Default Intern" and doc.title isnt "Default Extern"
       user = Meteor.users.findOne(userId)
-      return (user.profile.paid or isNotAlreadyThreeCampaigns(doc.firm, doc.start, doc.end, doc._id)) and doc.firm == user.profile.firm
+      return doc.firm == user.profile.firm
     else return false
 
 isNotAlreadyThreeCampaigns = (firm, date, date2, campaign) ->

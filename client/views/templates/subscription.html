@@ -1,0 +1,60 @@
+<template name="subscription">
+
+    <div class="container">
+
+      <!-- START THE FEATURETTES -->
+
+      <div class="featurette">
+        <h2 class="featurette-heading">{{i18n "subscription.campaignstitle"}} <span class="text-muted">{{i18n "subscription.campaignssubtitle"}}</span></h2>
+        <p class="lead">{{i18n "subscription.campaignstext"}}</p>
+      </div>
+      
+      <hr class="featurette-divider">
+      <div class="featurette" id="targetCont">
+        <h2 class="featurette-heading">{{i18n "subscription.targettitle"}} <span class="text-muted">{{i18n "subscription.targetsubtitle"}}</span></h2>
+        <p class="lead">{{i18n "subscription.targettext"}}</p>
+      </div>
+      
+      <hr class="featurette-divider">
+      <div class="featurette" id="targetCont">
+        <h2 class="featurette-heading">{{i18n "subscription.marketertitle"}} <span class="text-muted">{{i18n "subscription.marketersubtitle"}}</span></h2>
+        <p class="lead">{{i18n "subscription.marketertext"}}</p>
+      </div>
+
+      <hr class="featurette-divider">
+
+      <div class="featurette" id="free">
+        <h2 class="featurette-heading">{{i18n "subscription.freetitle"}} <span class="text-muted">{{i18n "subscription.freesubtitle"}}</span></h2>
+        <p class="lead">{{i18n "subscription.freetext"}}</p>
+      </div>
+
+      
+      <hr class="featurette-divider">
+      <div class="featurette">
+        {{#if admin}}
+        <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+          <input type="hidden" name="cmd" value="_s-xclick">
+          <input type="hidden" name="hosted_button_id" value="AW6XNNBM4884G">
+          <input type="hidden" name="custom" value="{{firmId}}">
+          <div class="form-group">
+            <button type="submit" id="submit" class="btn btn-primary btn-lg" name="submit">{{i18n "subscription.subscribe"}}</button>
+          </div>
+          <img alt="" border="0" src="https://www.paypalobjects.com/fr_FR/i/scr/pixel.gif" width="1" height="1">
+        </form>
+        {{else}}
+          <p>{{i18n "subscription.admin1"}} <a class="no-backbone" href="mailto:{{mailAdmin}}">{{i18n "subscription.admin2"}}</a> {{i18n "subscription.admin3"}}</p>
+        {{/if}}
+      </div>
+
+      <!-- /END THE FEATURETTES -->
+
+      <hr>
+
+      <!-- FOOTER -->
+      <footer>
+        <p>Made with <3 by <a href="http://www.linkedin.com/in/mathieudutour" target="_blank" class="no-backbone">Mathieu</a></p>
+      </footer>
+      <!-- /END OF FOOTER -->
+
+    </div><!-- /container -->
+</template>
