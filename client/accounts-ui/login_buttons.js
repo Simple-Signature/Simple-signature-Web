@@ -310,7 +310,7 @@
         document.getElementById('forgot-password-email').value = email;
     },
     'click #back-to-login-link': function () {
-    event.preventDefault();
+      event.preventDefault();
       loginButtonsSession.resetMessages();
 
       var email = trimmedElementValueById('login-email')
@@ -375,6 +375,10 @@
   //
 
   Template._loginButtonsChangePassword.events({
+    'click #login-old-password, click #login-password': function (event) {
+      event.stopPropagation();
+      event.preventDefault();
+    },
     'keypress #login-old-password, keypress #login-password, keypress #login-password-again': function (event) {
       if (event.keyCode === 13)
         changePassword();
@@ -382,16 +386,23 @@
     'click #login-buttons-do-change-password': function (event) {
       event.stopPropagation();
       changePassword();
+    },
+    'click #login-change-password-cancel': function (event) {
+      event.stopPropagation();
+      loginButtonsSession.resetMessages();
+      loginButtonsSession.set('inChangePasswordFlow', false);
+      loginButtonsSession.set('dropdownVisible', true);
+      $('#login').html(Meteor.render(Template._loginButtons));
     }
   });
 
   Template._loginButtonsChangePassword.fields = function () {
     return [
-      {fieldName: 'old-password', fieldLabel: 'Current Password', inputType: 'password',
+      {fieldName: 'old-password', fieldLabel: 'login.oldpassword', inputType: 'password',
        visible: function () {
          return true;
        }},
-      {fieldName: 'password', fieldLabel: 'New Password', inputType: 'password',
+      {fieldName: 'password', fieldLabel: 'login.newpassword', inputType: 'password',
        visible: function () {
          return true;
        }}
@@ -501,8 +512,8 @@
           var signInt = Signatures.insert({name: "interne default",firm: firmId,createdAt: new Date(),value : valueInt});
           var valueExt = "<p style=\"font-family: Helvetica, Arial, sans-serif; font-size: 12px; line-height: 14px; color: rgb(153, 153, 153);\"><span style=\"font-weight: bold; color: rgb(24, 74, 147);\">VARIABLE_NAME</span> / <span style=\"color: rgb(24, 74, 147);\">VARIABLE_JOB</span><br><span style=\"color: rgb(24, 74, 147);\">VARIABLE_PHONE / <a href=\"mailto:VARIABLE_MAIL\" style=\"color: rgb(30, 177, 230);\">VARIABLE_MAIL</a><span></p><p style=\"font-family: Helvetica, Arial, sans-serif; font-size: 10px; line-height: 14px;\"><span style=\"font-weight: bold; color: rgb(24, 74, 147);\">"+firm+"</span></p>";
           var signExt = Signatures.insert({name: "externe default",firm: firmId,createdAt: new Date(),value : valueExt});
-          Campaigns.insert({title:"Default Intern",signature: signInt,firm: firmId,service: null,start: new Date(),end: new Date(2099,1,1),editable:false});
-          Campaigns.insert({title:"Default Extern",signature: signExt,firm: firmId,service: null,start: new Date(),end: new Date(2099,1,1),editable:false});
+          Campaigns.insert({title:"Default Intern",signature: signInt,firm: firmId,service: null,start: new Date(2000,1,1),end: new Date(2099,1,1),editable:false});
+          Campaigns.insert({title:"Default Extern",signature: signExt,firm: firmId,service: null,start: new Date(2000,1,1),end: new Date(2099,1,1),editable:false});
           $('#previewSignature').html(valueInt);
           html2canvas($('#previewSignature'),{onrendered: function (canvas) {
             data = canvas.toDataURL(); 
@@ -549,9 +560,6 @@
     // notably not trimmed. a password could (?) start or end with a space
     var password = elementValueById('login-password');
     if (!validatePassword(password))
-      return;
-
-    if (!matchPasswordAgainIfPresent())
       return;
 
     Accounts.changePassword(oldPassword, password, function (error) {

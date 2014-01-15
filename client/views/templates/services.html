@@ -10,7 +10,7 @@
           </div>
         </div><!-- /.row -->
       {{#if admin}}
-      <div class="container">{{#if paid}}<button class="md-trigger btn btn-primary" data-modal="newServiceModal"><i class="icon-plus"></i> {{i18n "services.create"}}</button>{{else}}<a class="btn btn-primary" href="/subscription"><i class="icon-plus"></i> {{i18n "services.create"}}</a>{{/if}}</div>
+      <div>{{#if paid}}<button class="md-trigger btn btn-primary" data-modal="newServiceModal"><i class="icon-plus"></i> {{i18n "services.create"}}</button>{{else}}<a class="btn btn-primary" href="/subscription"><i class="icon-plus"></i> {{i18n "services.create"}}</a>{{/if}}</div>
       <br />
       <div class="well col-xs-8 col-sm-8 col-md-8 col-lg-8 col-xs-offset-2 col-sm-offset-2 col-md-offset-2 col-lg-offset-2">
       {{#each services}}

@@ -74,14 +74,18 @@ Template.campaigns.rendered = () ->
     events: Campaigns.find({firm: Meteor.user().profile.firm}).fetch()
     eventResize: (campaign, dayDelta,minuteDelta,revertFunc) ->
       if !campaign.end?
-        campaign.end = campaign.start
+        end = campaign.start
+        end.setHours(23,59,59,999)
+        campaign.end = end
       if Meteor.user().profile.paid or isNotAlreadyThreeCampaigns(campaign.firm, campaign.start, campaign.end, campaign._id)
         Campaigns.update(campaign._id,$set: {end:campaign.end})
       else
         revertFunc()
     eventDrop: (campaign, dayDelta,minuteDelta,allDay,revertFunc) ->
       if !campaign.end?
-        campaign.end = campaign.start
+        end = campaign.start
+        end.setHours(23,59,59,999)
+        campaign.end = end
       if Meteor.user().profile.paid or isNotAlreadyThreeCampaigns(campaign.firm, campaign.start, campaign.end, campaign._id)
         Campaigns.update(campaign._id,$set: {end:campaign.end, start:campaign.start})
       else
@@ -124,15 +128,17 @@ Template.newCampaign.events
     if isNotEmpty(name) and isNotAlreadyASameCampaign(name, firm)
       today = new Date()
       today.setHours(0,0,0,0)
+      tomorrow = new Date()
+      tomorrow.setHours(23,59,59,999)
       campaign = 
         title: name
         signature: signature
         firm: firm
         start: today
-        end: today
+        end: tomorrow
         service: service  
         editable: true
-        notify: notify
+        notify: notify == "true"
       Campaigns.insert campaign
       $('#calendar').fullCalendar('renderEvent', campaign, true);      
       $(".md-modal").removeClass("md-show")

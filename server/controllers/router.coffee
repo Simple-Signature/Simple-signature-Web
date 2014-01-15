@@ -5,7 +5,9 @@ Meteor.Router.add
     firms = Firms.findOne({name:firm})
     service = Services.findOne({name:service})
     if firms?
-      campaigns = Campaigns.find({$and: [{firm:firms._id}, {start: {$lte:new Date()}}, {end: {$gte:new Date()}} ]},{fields:{signature:1}}).fetch()
+      today = new Date()
+      today.setHours(12,0,0,0)
+      campaigns = Campaigns.find({$and: [{firm:firms._id}, {start: {$lte:today}}, {end: {$gte:today}} ]},{fields:{signature:1}}).fetch()
       if campaigns?
         campaignsId=[]
         campaigns.forEach (campaign) -> 
@@ -31,7 +33,9 @@ Meteor.Router.add
     this.response.setHeader("Access-Control-Allow-Headers","X-Requested-With")
     firms = Firms.findOne({name:firm})
     if firms?
-      campaigns = Campaigns.find({$and: [{firm:firms._id}, {start: {$lte:new Date()}}, {end: {$gte:new Date()}} ]},{fields:{signature:1}}).fetch()
+      today = new Date()
+      today.setHours(12,0,0,0)
+      campaigns = Campaigns.find({$and: [{firm:firms._id}, {start: {$lte:today}}, {end: {$gte:today}} ]},{fields:{signature:1}}).fetch()
       if campaigns?
         campaignsId=[]
         campaigns.forEach (campaign) -> 

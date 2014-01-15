@@ -11,11 +11,13 @@ CKEDITOR.editorConfig = function( config ) {
       { name: 'document', groups: [ 'mode', 'doctools' ], items: [ 'Source', '-', 'Templates' ] },
       { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ], items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat' ] },
       { name: 'links', items: [ 'Link', 'Unlink' ] },
-      { name: 'insert', items: [ 'Image', 'Table', 'HorizontalRule', 'SpecialChar'] },
+      { name: 'insert', items: [ 'Image', 'HorizontalRule', 'SpecialChar'] },
       '/',
       { name: 'styles', items: [ 'Font', 'FontSize' ] },
       { name: 'colors', items: [ 'TextColor', 'BGColor' ] },
       { name: 'tools', items: [ 'Maximize', 'ShowBlocks' ] }
     ];
   config.enterMode= CKEDITOR.ENTER_BR;
+  config.allowedContent = true;
+  config.ignoreEmptyParagraph = false;
 };

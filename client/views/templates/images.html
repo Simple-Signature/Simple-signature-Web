@@ -9,14 +9,14 @@
             </ol>
           </div>
         </div><!-- /.row -->
-      <div class="container"><button class="md-trigger btn btn-primary" data-modal="newImageModal"><i class="icon-plus"></i> {{i18n "images.ajout"}}</button></div>
-      <div class="container">
+      <div><button class="md-trigger btn btn-primary" data-modal="newImageModal"><i class="icon-plus"></i> {{i18n "images.ajout"}}</button></div>
+      <div>
         {{#if cfsIsUploading}}
           {{cfsUploadProgressBar}} {{i18n "images.uploading"}}
         {{/if}}
       </div>
       <br />
-      <div class="container">
+      <div>
         <ul id="imagesList"> 
           {{#each images}}
             {{> displayImage}}

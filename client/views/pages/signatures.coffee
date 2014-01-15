@@ -76,7 +76,7 @@
           id = $(e.target).parent().attr("idSign")
         sign = Signatures.findOne(id)
         $("#edit-signature-name").val(sign.name)
-        CKEDITOR.instances['edit-signature-content'].setData(sign.value.replace('PATHAPPDATA','/cfs/files/images/'))
+        CKEDITOR.instances['edit-signature-content'].setData(sign.value.replace(/PATHAPPDATA/g,'/cfs/files/images/'))
         $("#edit-signature-id").val(sign._id)
       "click .removeSignButton": (e) ->
         id = $(e.target).attr("idSign")
@@ -96,32 +96,8 @@
 Template.signatures.rendered = () ->
   ModalEffects()
   $('[data-toggle="tooltip"]').tooltip()
-  CKEDITOR.replace('new-signature-content',
-    toolbar: [
-      { name: 'document', groups: [ 'mode', 'doctools' ], items: [ 'Source', '-', 'Templates' ] },
-      { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ], items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat' ] },
-      { name: 'links', items: [ 'Link', 'Unlink' ] },
-      { name: 'insert', items: [ 'Image', 'HorizontalRule', 'SpecialChar'] },
-      '/',
-      { name: 'styles', items: [ 'Font', 'FontSize' ] },
-      { name: 'colors', items: [ 'TextColor', 'BGColor' ] },
-      { name: 'tools', items: [ 'Maximize', 'ShowBlocks' ] }
-    ]
-    enterMode: CKEDITOR.ENTER_BR
-  )
-  CKEDITOR.replace('edit-signature-content',
-    toolbar: [
-      { name: 'document', groups: [ 'mode', 'doctools' ], items: [ 'Source', '-', 'Templates' ] },
-      { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ], items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat' ] },
-      { name: 'links', items: [ 'Link', 'Unlink' ] },
-      { name: 'insert', items: [ 'Image', 'HorizontalRule', 'SpecialChar'] },
-      '/',
-      { name: 'styles', items: [ 'Styles', 'Format', 'Font', 'FontSize' ] },
-      { name: 'colors', items: [ 'TextColor', 'BGColor' ] },
-      { name: 'tools', items: [ 'Maximize', 'ShowBlocks' ] }
-    ]
-    enterMode: CKEDITOR.ENTER_BR
-  )
+  CKEDITOR.replace('new-signature-content')
+  CKEDITOR.replace('edit-signature-content')
 
 Template.newSignature.events
   "submit" : (e,t) ->
@@ -132,7 +108,7 @@ Template.newSignature.events
     if isNotEmpty(name) and isNotAlreadyASameSignature(name, firm)
       sign = Signatures.insert
         name: name
-        value: content.replace('/cfs/files/images/','PATHAPPDATA')
+        value: content.replace(/\/cfs\/files\/images\//g,'PATHAPPDATA')
         firm: firm
         createdAt: new Date()
         img: null        
@@ -154,7 +130,7 @@ Template.editSignature.events
     id = t.find('#edit-signature-id').value  
     firm = Meteor.user().profile.firm
     if isNotEmpty(name) and isNotAlreadyASameSignature(name, firm, id)
-      Signatures.update(id,{$set: {name: name,value: content.replace('/cfs/files/images/','PATHAPPDATA')}})
+      Signatures.update(id,{$set: {name: name,value: content.replace(/\/cfs\/files\/images\//g,'PATHAPPDATA')}})
       $('#previewSignature').html(content)
       html2canvas($('#previewSignature'),
         onrendered: (canvas) ->        

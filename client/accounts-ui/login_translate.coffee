@@ -5,6 +5,9 @@ i18n.i18nMessages.login =
   choosepassword: 
     en: "Choose your password"
     fr: "Choisir votre mot de passe"
+  oldpassword: 
+    en: "Current password"
+    fr: "Mot de passe actuel"
   newpassword: 
     en: "New password"
     fr: "Nouveau mot de passe"

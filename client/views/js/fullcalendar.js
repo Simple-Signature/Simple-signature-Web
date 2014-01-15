@@ -4777,7 +4777,7 @@ function View(element, calendar, viewName) {
 			if (allDay !== undefined) {
 				e.allDay = allDay;
 			}
-			addMinutes(addDays(e.start, dayDelta, true), minuteDelta);
+			e.start=addMinutes(addDays(e.start, dayDelta, true), minuteDelta);
 			if (e.end) {
 				e.end = addMinutes(addDays(e.end, dayDelta, true), minuteDelta);
 			}

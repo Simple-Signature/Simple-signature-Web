@@ -531,31 +531,6 @@
 						]
 					},
 						{
-						id: 'txtAlt',
-						type: 'text',
-						label: editor.lang.image.alt,
-						accessKey: 'T',
-						'default': '',
-						style: 'visibility:hidden',
-						onChange: function() {
-							updatePreview( this.getDialog() );
-						},
-						setup: function( type, element ) {
-							if ( type == IMAGE )
-								this.setValue( element.getAttribute( 'alt' ) );
-						},
-						commit: function( type, element ) {
-							if ( type == IMAGE ) {
-								if ( this.getValue() || this.isChanged() )
-									element.setAttribute( 'alt', this.getValue() );
-							} else if ( type == PREVIEW )
-								element.setAttribute( 'alt', this.getValue() );
-							else if ( type == CLEANUP )
-								element.removeAttribute( 'alt' );
-
-						}
-					},
-						{
 						type: 'hbox',
 						children: [
 							{
